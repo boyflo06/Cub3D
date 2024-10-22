@@ -27,6 +27,6 @@ re: fclean all
 ${NAME}: ${OBJS}
 	@make -C ./mlx all
 	@make -C ./libft bonus
-	gcc ${CFLAGS} ${OBJS} -g3 -O3 -flto -ffast-math -march=native -Lmlx -lmlx -lXext -lX11 -lm -lz -Llibft -l:libft.a ${INC} -o ${NAME}
+	gcc ${CFLAGS} ${OBJS} -fsanitize=address -g3 -O3 -flto -ffast-math -march=native -Lmlx -lmlx -lXext -lX11 -lm -lz -Llibft -l:libft.a ${INC} -o ${NAME}
 
 .PHONY: all clean fclean re

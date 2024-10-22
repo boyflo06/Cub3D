@@ -6,7 +6,7 @@
 /*   By: fghysbre <fghysbre@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 22:56:14 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/10/22 21:19:26 by fghysbre         ###   ########.fr       */
+/*   Updated: 2024/10/22 23:46:23 by fghysbre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,12 +208,37 @@ void	displayplayer2D(t_prog *prog, t_data *img) {
 	ft_putline(img, (t_point) {prog->player.x, prog->player.y}, getpointercoords(prog), itoargb(255, 230, 230, 0), 1);
 }
 
+int	displayRaycast2D(t_prog *prog, t_data *img) {
+	double	tmp;
+	int		rot;
+
+	rot = prog->player.rot;
+	if (rot >= 360)
+		rot -= 360;
+	if (rot < 0)
+		rot += 360;
+	printf("%d\n", rot);
+	if (rot < 90 || rot > 270)
+	{
+		if (rot == 0)
+			tmp = 0.f;
+		else
+			tmp = - (prog->player.y - ((prog->player.y >> 6) << 6)) / tan(degtorad((double) rot));
+		printf("%f\n", tan(degtorad((double) rot)));
+		printf("{%d, %d}\n", (prog->player.y >> 6) - 1, ((prog->player.x + (int) tmp)) >> 6);
+		if ((prog->player.y >> 6) - 1 >= 0 && ((prog->player.x + (int) tmp)) >> 6 >= 0 && prog->map.data[(prog->player.y >> 6) - 1][((prog->player.x + (int) tmp)) >> 6] == '1')
+			return (ft_putline(img, (t_point) {prog->player.x, prog->player.y}, (t_point) {(prog->player.x + tmp), (prog->player.y >> 6) << 6}, itoargb(255, 0, 0, 230), 1), 0);
+	}
+	return (1);
+}
+
 int	loop(t_prog	*prog) {
 	t_data	img;
 	img.img = mlx_new_image(prog->mlx, 1280, 720);
 	img.addr = mlx_get_data_addr(img.img, &img.bpp, &img.ll, &img.end);
 	display2D(prog, &img);
 	displayplayer2D(prog, &img);
+	displayRaycast2D(prog, &img);
 	mlx_put_image_to_window(prog->mlx, prog->win, img.img, 0, 0);
 	mlx_destroy_image(prog->mlx, img.img);
 	return (1);

@@ -6,7 +6,7 @@
 /*   By: fghysbre <fghysbre@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 22:56:16 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/10/20 00:31:38 by fghysbre         ###   ########.fr       */
+/*   Updated: 2024/10/22 15:32:42 by fghysbre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,13 @@ typedef	struct s_plyr
 	int		y;
 	int		rot;
 }	t_plyr;
+
+typedef struct s_point
+{
+	int	x;
+	int	y;
+}	t_point;
+
 
 typedef struct s_prog
 {

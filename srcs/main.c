@@ -6,7 +6,7 @@
 /*   By: fghysbre <fghysbre@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 22:56:14 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/10/20 00:37:23 by fghysbre         ###   ########.fr       */
+/*   Updated: 2024/10/22 21:19:26 by fghysbre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,28 +75,32 @@ int	getmap(t_prog *prog, char *path)
 	return (1);
 }
 
-double	degtorad(double deg) {
+double	degtorad(double deg)
+{
 	return (deg * (PI/180));
 }
-
-int	getvdistance(t_prog *prog, int rot) {
+/* 
+int	getvdistance(t_prog *prog, int rot)
+{
 	double	tmp;
 	if (rot < 180)
 	{
 		tmp = (prog->player.y - ((prog->player.y >> 6) << 6)) / tan(degtorad((double) rot));
-		if (prog->map.data[(prog->player.y >> 6) - 1][((prog->player.x + (int) tmp) >> 6)])
-			return ();
+		if (prog->map.data[(prog->player.y >> 6) - 1][((prog->player.x + (int) tmp) >> 6)] == '1')
+			return (());
 	}
 }
 
-int	gethdistance(t_prog *prog, int rot) {
+int	gethdistance(t_prog *prog, int rot)
+{
 	
 }
 
-int	getdistance(t_prog *prog, int rot) {
+int	getdistance(t_prog *prog, int rot)
+{
 	int	vdis;
 	int	hdis;
-	if (rot > 360)
+	if (rot >= 360)
 		rot -= 360;
 	if (rot < 0)
 		rot += 360;
@@ -115,6 +119,148 @@ int	raycast(t_prog *prog)
 	while (++irot <= prog->player.rot++) {
 		int	getd = getdistance()
 	}
+} */
+
+void	ft_pixelput(t_data *data, int x, int y, int color) {
+	char	*dst;
+
+	dst = data->addr + (y * data->ll + x * (data->bpp / 8));
+	*(unsigned int *)dst = color;
+}
+
+void	ft_putline(t_data *data, t_point p1, t_point p2, int color, int width) {
+	int	dx;
+	int	dy;
+	int	sx;
+	int	sy;
+	int	err;
+	int	e2;
+
+	if (!width)
+		return ;
+	dx = abs(p2.x - p1.x);
+	dy = abs(p2.y - p1.y);
+	if (p1.x < p2.x)
+		sx = 1;
+	else
+		sx = -1;
+	if (p1.y < p2.y)
+		sy = 1;
+	else
+		sy = -1;
+	err = dx - dy;
+	while (1) {
+		for (int i = -width / 2; i <= width / 2; i++) {
+			if (dx > dy) {
+				ft_pixelput(data, p1.x, p1.y + i, color);
+			} else {
+				ft_pixelput(data, p1.x + i, p1.y, color);
+			}
+		}
+
+		if (p1.x == p2.x && p1.y == p2.y)
+			break;
+		e2 = 2 * err;
+		if (e2 > -dy) {
+			err -= dy;
+			p1.x += sx;
+		}
+		if (e2 < dx) {
+			err += dx;
+			p1.y += sy;
+		}
+	}
+}
+
+void	display2D(t_prog *prog, t_data *img) {
+	for (int x = 0; x < 1280; x++) {
+		for (int y = 0; y < 720; y++) {
+			ft_pixelput(img, x, y, itoargb(255, 155, 155, 155));
+		}
+	}
+	for (int y = 0; prog->map.data[y >> 6]; y++) {
+		for (int x = 0; prog->map.data[y >> 6][x >> 6]; x++) {
+			if (((y >> 6) << 6 == y) || (x >> 6) << 6 == x)
+				continue;
+			if (prog->map.data[y >> 6][x >> 6] == '1')
+				ft_pixelput(img, x, y, itoargb(255, 200, 200, 200));
+			else if (ft_strchr("0NSWE", prog->map.data[y >> 6][x >> 6]) && prog->map.data[y >> 6][x >> 6] != 0)
+				ft_pixelput(img, x, y, itoargb(255, 100, 100, 100));
+		}
+	}
+}
+
+t_point	getpointercoords(t_prog	*prog) {
+	double	adj;
+	double	opp;
+
+	adj = cos(degtorad(prog->player.rot)) * 20.0;
+	opp = sin(degtorad(prog->player.rot)) * 20.0;
+	return ((t_point) {adj + prog->player.x, opp + prog->player.y});
+}
+
+void	displayplayer2D(t_prog *prog, t_data *img) {
+	for (int x = prog->player.x - 2; x < prog->player.x + 2; x++) {
+		for (int y = prog->player.y - 2; y < prog->player.y + 2; y++) {
+			ft_pixelput(img, x, y, itoargb(255, 230, 230, 0));
+		}
+	}
+	ft_putline(img, (t_point) {prog->player.x, prog->player.y}, getpointercoords(prog), itoargb(255, 230, 230, 0), 1);
+}
+
+int	loop(t_prog	*prog) {
+	t_data	img;
+	img.img = mlx_new_image(prog->mlx, 1280, 720);
+	img.addr = mlx_get_data_addr(img.img, &img.bpp, &img.ll, &img.end);
+	display2D(prog, &img);
+	displayplayer2D(prog, &img);
+	mlx_put_image_to_window(prog->mlx, prog->win, img.img, 0, 0);
+	mlx_destroy_image(prog->mlx, img.img);
+	return (1);
+}
+
+//TODO: ADD more checks trust
+int	getplayer(t_prog *prog)
+{
+	int	i;
+	int	j;
+	
+	i = -1;
+	while (prog->map.data[++i])
+	{
+		j = -1;
+		while (prog->map.data[i][++j])
+		{
+			if (!ft_strchr("NSWE", prog->map.data[i][j]))
+				continue ;
+			prog->player.x = (j << 6) + 32;
+			prog->player.y = (i << 6) + 32;
+			if (prog->map.data[i][++j] == 'N')
+				return ((prog->player.rot = 0));
+			if (prog->map.data[i][++j] == 'S')
+				return ((prog->player.rot = 180));
+			if (prog->map.data[i][++j] == 'E')
+				return ((prog->player.rot = 90));
+			if (prog->map.data[i][++j] == 'W')
+				return ((prog->player.rot = 270));
+		}
+	}
+	return (-1);
+}
+
+int	keypress(int key, t_prog *prog) {
+	if (key == 65363)
+	{
+		prog->player.rot += 5;
+		printf("right");
+	}
+	if (key == 65361)
+	{
+		prog->player.rot -= 5;
+		printf("left");
+	}
+	printf("%d\n", key);
+	return (1);
 }
 
 int	main(int argc, char **argv)
@@ -134,6 +280,8 @@ int	main(int argc, char **argv)
 	prog.player.x = 288;
 	prog.player.y = 224;
 	prog.player.rot = 0;
-	raycast()
+	getplayer(&prog);
+	mlx_hook(prog.win, 2, 1L<<0, keypress, &prog);
+	mlx_loop_hook(prog.mlx, loop, &prog);
 	mlx_loop(prog.mlx);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fghysbre <fghysbre@student.s19.be>         +#+  +:+       +#+        */
+/*   By: mleonet <mleonet@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 22:56:14 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/10/22 23:46:23 by fghysbre         ###   ########.fr       */
+/*   Updated: 2024/10/24 16:55:14 by mleonet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,8 @@ int	getmap(t_prog *prog, char *path)
 	if (fd == -1)
 		return (0);
 	buff = get_next_line(fd);
-	while (buff) {
+	while (buff)
+	{
 		if (ft_strlen(buff) > 1)
 		{
 			if (ft_strrchr(buff, '\n') && ft_strrchr(buff, '\n')[1] == 0)
@@ -77,9 +78,9 @@ int	getmap(t_prog *prog, char *path)
 
 double	degtorad(double deg)
 {
-	return (deg * (PI/180));
+	return (deg * (PI / 180));
 }
-/* 
+/*
 int	getvdistance(t_prog *prog, int rot)
 {
 	double	tmp;
@@ -121,14 +122,16 @@ int	raycast(t_prog *prog)
 	}
 } */
 
-void	ft_pixelput(t_data *data, int x, int y, int color) {
+void	ft_pixelput(t_data *data, int x, int y, int color)
+{
 	char	*dst;
 
 	dst = data->addr + (y * data->ll + x * (data->bpp / 8));
 	*(unsigned int *)dst = color;
 }
 
-void	ft_putline(t_data *data, t_point p1, t_point p2, int color, int width) {
+void	ft_putline(t_data *data, t_point p1, t_point p2, int color, int width)
+{
 	int	dx;
 	int	dy;
 	int	sx;
@@ -149,48 +152,55 @@ void	ft_putline(t_data *data, t_point p1, t_point p2, int color, int width) {
 	else
 		sy = -1;
 	err = dx - dy;
-	while (1) {
-		for (int i = -width / 2; i <= width / 2; i++) {
-			if (dx > dy) {
+	while (1)
+	{
+		for (int i = -width / 2; i <= width / 2; i++)
+		{
+			if (dx > dy)
 				ft_pixelput(data, p1.x, p1.y + i, color);
-			} else {
+			else
 				ft_pixelput(data, p1.x + i, p1.y, color);
-			}
 		}
-
 		if (p1.x == p2.x && p1.y == p2.y)
-			break;
+			break ;
 		e2 = 2 * err;
-		if (e2 > -dy) {
+		if (e2 > -dy)
+		{
 			err -= dy;
 			p1.x += sx;
 		}
-		if (e2 < dx) {
+		if (e2 < dx)
+		{
 			err += dx;
 			p1.y += sy;
 		}
 	}
 }
 
-void	display2D(t_prog *prog, t_data *img) {
-	for (int x = 0; x < 1280; x++) {
-		for (int y = 0; y < 720; y++) {
+void	display2D(t_prog *prog, t_data *img)
+{
+	for (int x = 0; x < 1280; x++)
+	{
+		for (int y = 0; y < 720; y++)
 			ft_pixelput(img, x, y, itoargb(255, 155, 155, 155));
-		}
 	}
-	for (int y = 0; prog->map.data[y >> 6]; y++) {
-		for (int x = 0; prog->map.data[y >> 6][x >> 6]; x++) {
+	for (int y = 0; prog->map.data[y >> 6]; y++)
+	{
+		for (int x = 0; prog->map.data[y >> 6][x >> 6]; x++)
+		{
 			if (((y >> 6) << 6 == y) || (x >> 6) << 6 == x)
-				continue;
+				continue ;
 			if (prog->map.data[y >> 6][x >> 6] == '1')
 				ft_pixelput(img, x, y, itoargb(255, 200, 200, 200));
-			else if (ft_strchr("0NSWE", prog->map.data[y >> 6][x >> 6]) && prog->map.data[y >> 6][x >> 6] != 0)
+			else if (ft_strchr("0NSWE", prog->map.data[y >> 6][x >> 6])
+				&& prog->map.data[y >> 6][x >> 6] != 0)
 				ft_pixelput(img, x, y, itoargb(255, 100, 100, 100));
 		}
 	}
 }
 
-t_point	getpointercoords(t_prog	*prog) {
+t_point	getpointercoords(t_prog	*prog)
+{
 	double	adj;
 	double	opp;
 
@@ -199,16 +209,19 @@ t_point	getpointercoords(t_prog	*prog) {
 	return ((t_point) {adj + prog->player.x, opp + prog->player.y});
 }
 
-void	displayplayer2D(t_prog *prog, t_data *img) {
-	for (int x = prog->player.x - 2; x < prog->player.x + 2; x++) {
-		for (int y = prog->player.y - 2; y < prog->player.y + 2; y++) {
+void	displayplayer2D(t_prog *prog, t_data *img)
+{
+	for (int x = prog->player.x - 2; x < prog->player.x + 2; x++)
+	{
+		for (int y = prog->player.y - 2; y < prog->player.y + 2; y++)
 			ft_pixelput(img, x, y, itoargb(255, 230, 230, 0));
-		}
 	}
-	ft_putline(img, (t_point) {prog->player.x, prog->player.y}, getpointercoords(prog), itoargb(255, 230, 230, 0), 1);
+	ft_putline(img, (t_point) {prog->player.x, prog->player.y},
+		getpointercoords(prog), itoargb(255, 230, 230, 0), 1);
 }
 
-int	displayRaycast2D(t_prog *prog, t_data *img) {
+int	displayRaycast2D(t_prog *prog, t_data *img)
+{
 	double	tmp;
 	int		rot;
 
@@ -223,7 +236,8 @@ int	displayRaycast2D(t_prog *prog, t_data *img) {
 		if (rot == 0)
 			tmp = 0.f;
 		else
-			tmp = - (prog->player.y - ((prog->player.y >> 6) << 6)) / tan(degtorad((double) rot));
+			tmp = - (prog->player.y - ((prog->player.y >> 6) << 6))
+				/ tan(degtorad((double) rot));
 		printf("%f\n", tan(degtorad((double) rot)));
 		printf("{%d, %d}\n", (prog->player.y >> 6) - 1, ((prog->player.x + (int) tmp)) >> 6);
 		if ((prog->player.y >> 6) - 1 >= 0 && ((prog->player.x + (int) tmp)) >> 6 >= 0 && prog->map.data[(prog->player.y >> 6) - 1][((prog->player.x + (int) tmp)) >> 6] == '1')
@@ -232,8 +246,10 @@ int	displayRaycast2D(t_prog *prog, t_data *img) {
 	return (1);
 }
 
-int	loop(t_prog	*prog) {
+int	loop(t_prog	*prog)
+{
 	t_data	img;
+
 	img.img = mlx_new_image(prog->mlx, 1280, 720);
 	img.addr = mlx_get_data_addr(img.img, &img.bpp, &img.ll, &img.end);
 	display2D(prog, &img);
@@ -249,7 +265,7 @@ int	getplayer(t_prog *prog)
 {
 	int	i;
 	int	j;
-	
+
 	i = -1;
 	while (prog->map.data[++i])
 	{
@@ -273,7 +289,8 @@ int	getplayer(t_prog *prog)
 	return (-1);
 }
 
-int	keypress(int key, t_prog *prog) {
+int	keypress(int key, t_prog *prog)
+{
 	if (key == 65363)
 	{
 		prog->player.rot += 5;
@@ -306,7 +323,7 @@ int	main(int argc, char **argv)
 	prog.player.y = 224;
 	prog.player.rot = 0;
 	getplayer(&prog);
-	mlx_hook(prog.win, 2, 1L<<0, keypress, &prog);
+	mlx_hook(prog.win, 2, 1L << 0, keypress, &prog);
 	mlx_loop_hook(prog.mlx, loop, &prog);
 	mlx_loop(prog.mlx);
 }

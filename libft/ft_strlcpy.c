@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fghysbre <fghysbre@student.s19.be>         +#+  +:+       +#+        */
+/*   By: mleonet <mleonet@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 13:51:53 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/10/18 23:25:30 by fghysbre         ###   ########.fr       */
+/*   Updated: 2024/10/24 16:19:40 by mleonet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 	char	*crash;
 
 	i = -1;
+	crash = NULL;
 	if (!dst || !src)
 		crash = "seg fault";
 	if (!crash)

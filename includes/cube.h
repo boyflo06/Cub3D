@@ -6,7 +6,7 @@
 /*   By: fghysbre <fghysbre@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 22:56:16 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/10/22 15:32:42 by fghysbre         ###   ########.fr       */
+/*   Updated: 2024/10/24 15:54:01 by fghysbre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ typedef	struct s_map
 	char	*EA;
 	int		F;
 	int		C;
+	int		width;
+	int		height;
 }	t_map;
 
 typedef	struct s_plyr

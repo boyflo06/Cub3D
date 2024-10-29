@@ -6,7 +6,7 @@
 /*   By: fghysbre <fghysbre@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 22:56:16 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/10/24 15:54:01 by fghysbre         ###   ########.fr       */
+/*   Updated: 2024/10/29 14:11:31 by fghysbre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,14 @@ typedef struct	s_data {
 typedef	struct s_map
 {
 	char	**data;
-	char	*NO;
-	char	*SO;
-	char	*WE;
-	char	*EA;
+	char	*NO_src;
+	char	*SO_src;
+	char	*WE_src;
+	char	*EA_src;
+	t_data	NO;
+	t_data	SO;
+	t_data	WE;
+	t_data	EA;
 	int		F;
 	int		C;
 	int		width;
@@ -46,6 +50,8 @@ typedef	struct s_plyr
 {
 	int		x;
 	int		y;
+	float	exactx;
+	float	exacty;
 	int		rot;
 }	t_plyr;
 

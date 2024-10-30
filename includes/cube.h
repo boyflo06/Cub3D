@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cube.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fghysbre <fghysbre@student.s19.be>         +#+  +:+       +#+        */
+/*   By: fghysbre <fghysbre@stduent.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 22:56:16 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/10/29 14:11:31 by fghysbre         ###   ########.fr       */
+/*   Updated: 2024/10/30 16:38:02 by fghysbre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,15 @@ typedef struct s_point
 	int	y;
 }	t_point;
 
+typedef struct s_ray
+{
+	int		dist;
+	t_point	point;
+	int		side;
+	float	rot;
+	float	lheight;
+	float	screen_x;
+}	t_ray;
 
 typedef struct s_prog
 {

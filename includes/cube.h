@@ -6,7 +6,7 @@
 /*   By: fghysbre <fghysbre@stduent.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 22:56:16 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/10/30 16:38:02 by fghysbre         ###   ########.fr       */
+/*   Updated: 2024/10/31 13:36:48 by fghysbre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,10 @@ typedef	struct s_map
 
 typedef	struct s_plyr
 {
-	int		x;
-	int		y;
-	float	exactx;
-	float	exacty;
+	double	x;
+	double	y;
+	int		ix;
+	int		iy;
 	int		rot;
 }	t_plyr;
 

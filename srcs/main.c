@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fghysbre <fghysbre@stduent.s19.be>         +#+  +:+       +#+        */
+/*   By: fghysbre <fghysbre@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 22:56:14 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/10/31 14:02:53 by fghysbre         ###   ########.fr       */
+/*   Updated: 2024/11/01 15:29:10 by fghysbre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ void	ft_pixelput(t_data *data, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
-void	ft_putline(t_data *data, t_point p1, t_point p2, int color, int width)
+/* void	ft_putline(t_data *data, t_point p1, t_point p2, int color, int width)
 {
 	int	dx;
 	int	dy;
@@ -141,8 +141,8 @@ void	ft_putline(t_data *data, t_point p1, t_point p2, int color, int width)
 
 	if (!width)
 		return ;
-	dx = abs(p2.x - p1.x);
-	dy = abs(p2.y - p1.y);
+	dx = fabs(p2.x - p1.x);
+	dy = fabs(p2.y - p1.y);
 	if (p1.x < p2.x)
 		sx = 1;
 	else
@@ -175,26 +175,26 @@ void	ft_putline(t_data *data, t_point p1, t_point p2, int color, int width)
 			p1.y += sy;
 		}
 	}
-}
+} */
 
 t_point	getvdistance(t_prog *prog, double rot)
 {
 	double	tmp;
 	int		i;
-	int		x;
+	double	x;
 
 	if (rot < 179.999999 && rot > 0.000001)
 	{
-		tmp = - (prog->player.iy - ((prog->player.iy >> 6) << 6)) / tan(degtorad((double) rot));
-		//printf("v %d %d, %d %d\n", ((prog->player.x + (int) tmp)) >> 6, (prog->player.iy >> 6) - 1, (prog->player.x + (int) tmp), (prog->player.iy >> 6) << 6);
-		if ((prog->player.iy >> 6) - 1 >= 0 && ((prog->player.ix + (int) tmp)) >> 6 >= 0 && (prog->map.data[(prog->player.iy >> 6) - 1][((prog->player.ix + (int) tmp)) >> 6] == '1' ||
-			(prog->map.data[(prog->player.iy >> 6) - 1][((prog->player.ix + (int) tmp + 1)) >> 6] == '1' && !((prog->player.ix + (int) tmp) % 64)) || (prog->map.data[(prog->player.iy >> 6) - 1][((prog->player.ix + (int) tmp - 1)) >> 6] == '1' && !((prog->player.ix + (int) tmp) % 64))))
-			return ((t_point) {(prog->player.ix + tmp), (prog->player.iy >> 6) << 6});
-		i = (prog->player.iy >> 6) - 2;
-		x = prog->player.ix + tmp - (64 / tan(degtorad((double) rot)));
+		tmp = - (prog->player.y - (((int) round(prog->player.y) >> 6) << 6)) / tan(degtorad((double) rot));
+		//printf("v %d %d, %d %d\n", ((prog->player.x + (int) tmp)) >> 6, (prog->player.y >> 6) - 1, (prog->player.x + (int) tmp), (prog->player.y >> 6) << 6);
+		if (((int) round(prog->player.y) >> 6) - 1 >= 0 && ((int) round(prog->player.x + (int) tmp)) >> 6 >= 0 && (prog->map.data[((int) round(prog->player.y) >> 6) - 1][((int) round(prog->player.x + (int) tmp)) >> 6] == '1' ||
+			(prog->map.data[((int) round(prog->player.y) >> 6) - 1][((int) round(prog->player.x + (int) tmp + 1)) >> 6] == '1' && !((int) round(prog->player.x + (int) tmp) % 64)) || (prog->map.data[((int) round(prog->player.y) >> 6) - 1][((int) round(prog->player.x + (int) tmp - 1)) >> 6] == '1' && !((int) round(prog->player.x + (int) tmp) % 64))))
+			return ((t_point) {(prog->player.x + tmp), ((int) round(prog->player.y) >> 6) << 6});
+		i = ((int) round(prog->player.y) >> 6) - 2;
+		x = prog->player.x + tmp - (64 / tan(degtorad((double) rot)));
 		tmp = - (64 / tan(degtorad((double) rot)));
 		while (i >= 0) {
-			if (x >> 6 >= 0 && prog->map.data[i][x >> 6] == '1')
+			if ((int) round(x) >> 6 >= 0 && prog->map.data[i][(int) round(x) >> 6] == '1')
 				return ((t_point) {x, (i + 1) << 6});
 			i--;
 			x += tmp;
@@ -202,16 +202,16 @@ t_point	getvdistance(t_prog *prog, double rot)
 	}
 	else if (rot > 180.000001)
 	{
-		tmp = - ((prog->player.iy - (((prog->player.iy >> 6) + 1) << 6)) / tan(degtorad((double) rot)));
-		//printf("v %d %d, %d %d\n", ((prog->player.ix + (int) tmp)) >> 6, (prog->player.iy >> 6) + 1, (prog->player.ix + (int) tmp), (prog->player.iy >> 6) << 6);
-		if ((prog->player.iy >> 6) + 1 >= 0 && ((prog->player.ix + (int) tmp)) >> 6 >= 0 && (prog->map.data[(prog->player.iy >> 6) + 1][((prog->player.ix + (int) tmp)) >> 6] == '1' ||
-			(prog->map.data[(prog->player.iy >> 6) + 1][((prog->player.ix + (int) tmp + 1)) >> 6] == '1' && !((prog->player.ix + (int) tmp) % 64)) || (prog->map.data[(prog->player.iy >> 6) + 1][((prog->player.ix + (int) tmp - 1)) >> 6] == '1' && !((prog->player.ix + (int) tmp) % 64))))
-			return ((t_point) {(prog->player.ix + tmp), ((prog->player.iy >> 6) + 1) << 6});
-		i = (prog->player.iy >> 6) + 2;
-		x = prog->player.ix + tmp + (64 / tan(degtorad((double) rot)));
+		tmp = - ((prog->player.y - ((((int) round(prog->player.y) >> 6) + 1) << 6)) / tan(degtorad((double) rot)));
+		//printf("v %d %d, %d %d\n", ((prog->player.x + (int) tmp)) >> 6, (prog->player.y >> 6) + 1, (prog->player.x + (int) tmp), (prog->player.y >> 6) << 6);
+		if (((int) round(prog->player.y) >> 6) + 1 >= 0 && ((int) round(prog->player.x + (int) tmp)) >> 6 >= 0 && (prog->map.data[((int) round(prog->player.y) >> 6) + 1][((int) round(prog->player.x + (int) tmp)) >> 6] == '1' ||
+			(prog->map.data[((int) round(prog->player.y) >> 6) + 1][((int) round(prog->player.x + (int) tmp + 1)) >> 6] == '1' && !((int) round(prog->player.x + (int) tmp) % 64)) || (prog->map.data[((int) round(prog->player.y) >> 6) + 1][((int) round(prog->player.x + (int) tmp - 1)) >> 6] == '1' && !((int) round(prog->player.x + (int) tmp) % 64))))
+			return ((t_point) {(prog->player.x + tmp), (((int) round(prog->player.y) >> 6) + 1) << 6});
+		i = ((int) round(prog->player.y) >> 6) + 2;
+		x = prog->player.x + tmp + (64 / tan(degtorad((double) rot)));
 		tmp = + (64 / tan(degtorad((double) rot)));
 		while (i < prog->map.height) {
-			if (x >> 6 >= 0 && prog->map.data[i][x >> 6] == '1')
+			if ((int) round(x) >> 6 >= 0 && prog->map.data[i][(int) round(x) >> 6] == '1')
 				return ((t_point) {x, (i) << 6});
 			i++;
 			x += tmp;
@@ -224,23 +224,23 @@ t_point	gethdistance(t_prog *prog, double rot)
 {
 	double	tmp;
 	int		i;
-	int		y;
+	double		y;
 
 	if (rot > 270.000001 || rot < 89.999999)
 	{
 		if (rot == 0)
 			tmp = 0;
 		else
-			tmp = - (prog->player.ix - ((prog->player.ix >> 6) << 6)) * tan(degtorad((double) rot));
-		//printf("h %d %d, %d %d\n", (prog->player.ix >> 6) - 1, (prog->player.iy + (int) tmp) >> 6, (prog->player.ix >> 6) << 6, (prog->player.iy + (int) tmp));
-		if ((prog->player.ix >> 6) - 1 >= 0 && (prog->player.ix >> 6) - 1 < prog->map.width && ((prog->player.iy + (int) tmp)) >> 6 >= 0 && ((prog->player.iy + (int) tmp)) >> 6 < prog->map.height && (prog->map.data[(prog->player.iy + (int) tmp) >> 6][(prog->player.ix >> 6) - 1] == '1' ||
-			(prog->map.data[(prog->player.iy + (int) tmp + 1) >> 6][(prog->player.ix >> 6) - 1] == '1' && !((prog->player.iy + (int) tmp) % 64)) || (prog->map.data[(prog->player.iy + (int) tmp - 1) >> 6][(prog->player.ix >> 6) - 1] == '1' && !((prog->player.iy + (int) tmp) % 64))))
-			return ((t_point) {(prog->player.ix >> 6) << 6, prog->player.iy + tmp});
-		i = (prog->player.ix >> 6) - 2;
-		y = prog->player.iy + tmp - (64 * tan(degtorad((double) rot)));
+			tmp = - (prog->player.x - (((int) round(prog->player.x) >> 6) << 6)) * tan(degtorad((double) rot));
+		//printf("h %d %d, %d %d\n", (prog->player.x >> 6) - 1, (prog->player.y + (int) tmp) >> 6, (prog->player.x >> 6) << 6, (prog->player.y + (int) tmp));
+		if (((int) round(prog->player.x) >> 6) - 1 >= 0 && ((int) round(prog->player.x) >> 6) - 1 < prog->map.width && ((int) round(prog->player.y + (int) tmp)) >> 6 >= 0 && ((int) round(prog->player.y + (int) tmp)) >> 6 < prog->map.height && (prog->map.data[(int) round(prog->player.y + (int) tmp) >> 6][((int) round(prog->player.x) >> 6) - 1] == '1' ||
+			(prog->map.data[(int) round(prog->player.y + (int) tmp + 1) >> 6][((int) round(prog->player.x) >> 6) - 1] == '1' && !((int) round(prog->player.y + (int) tmp) % 64)) || (prog->map.data[(int) round(prog->player.y + (int) tmp - 1) >> 6][((int) round(prog->player.x) >> 6) - 1] == '1' && !((int) round(prog->player.y + (int) tmp) % 64))))
+			return ((t_point) {((int) round(prog->player.x) >> 6) << 6, prog->player.y + tmp});
+		i = ((int) round(prog->player.x) >> 6) - 2;
+		y = prog->player.y + tmp - (64 * tan(degtorad((double) rot)));
 		tmp = - (64 * tan(degtorad((double) rot)));
 		while (i >= 0) {
-			if (y >> 6 >= 0 && y >> 6 < prog->map.height && prog->map.data[y >> 6][i] == '1')
+			if ((int) round(y) >> 6 >= 0 && (int) round(y) >> 6 < prog->map.height && prog->map.data[(int) round(y) >> 6][i] == '1')
 				return ((t_point) {(i + 1) << 6, y});
 			i--;
 			y += tmp;
@@ -248,16 +248,16 @@ t_point	gethdistance(t_prog *prog, double rot)
 	}
 	if (rot > 90.000001 && rot < 269.999999)
 	{
-		tmp = - ((prog->player.ix - (((prog->player.ix >> 6) + 1) << 6)) * tan(degtorad((double) rot)));
-		//printf("h %d %d, %d %d\n", (prog->player.ix >> 6) + 1, (prog->player.iy + (int) tmp) >> 6, (prog->player.ix >> 6) << 6, (prog->player.iy + (int) tmp));
-		if ((prog->player.ix >> 6) + 1 >= 0 && (prog->player.ix >> 6) + 1 < prog->map.width && ((prog->player.iy + (int) tmp)) >> 6 >= 0 && ((prog->player.iy + (int) tmp)) >> 6 < prog->map.height && (prog->map.data[(prog->player.iy + (int) tmp) >> 6][(prog->player.ix >> 6) + 1] == '1' ||
-			(prog->map.data[(prog->player.iy + (int) tmp + 1) >> 6][(prog->player.ix >> 6) + 1] == '1' && !((prog->player.iy + (int) tmp) % 64)) || (prog->map.data[(prog->player.iy + (int) tmp - 1) >> 6][(prog->player.ix >> 6) + 1] == '1' && !((prog->player.iy + (int) tmp) % 64))))
-			return ((t_point) {((prog->player.ix >> 6) + 1) << 6, (prog->player.iy + tmp)});
-		i = (prog->player.ix >> 6) + 2;
-		y = prog->player.iy + tmp + (64 * tan(degtorad((double) rot)));
+		tmp = - ((prog->player.x - ((((int) round(prog->player.x) >> 6) + 1) << 6)) * tan(degtorad((double) rot)));
+		//printf("h %d %d, %d %d\n", (prog->player.x >> 6) + 1, (prog->player.y + (int) tmp) >> 6, (prog->player.x >> 6) << 6, (prog->player.y + (int) tmp));
+		if (((int) round(prog->player.x) >> 6) + 1 >= 0 && ((int) round(prog->player.x) >> 6) + 1 < prog->map.width && ((int) round(prog->player.y + (int) tmp)) >> 6 >= 0 && ((int) round(prog->player.y + (int) tmp)) >> 6 < prog->map.height && (prog->map.data[(int) round(prog->player.y + (int) tmp) >> 6][((int) round(prog->player.x) >> 6) + 1] == '1' ||
+			(prog->map.data[(int) round(prog->player.y + (int) tmp + 1) >> 6][((int) round(prog->player.x) >> 6) + 1] == '1' && !((int) round(prog->player.y + (int) tmp) % 64)) || (prog->map.data[(int) round(prog->player.y + (int) tmp - 1) >> 6][((int) round(prog->player.x) >> 6) + 1] == '1' && !((int) round(prog->player.y + (int) tmp) % 64))))
+			return ((t_point) {(((int) round(prog->player.x) >> 6) + 1) << 6, (prog->player.y + tmp)});
+		i = ((int) round(prog->player.x) >> 6) + 2;
+		y = prog->player.y + tmp + (64 * tan(degtorad((double) rot)));
 		tmp = + (64 * tan(degtorad((double) rot)));
 		while (i < prog->map.width) {
-			if (y >> 6 >= 0 && y >> 6 < prog->map.height && prog->map.data[y >> 6][i] == '1')
+			if ((int) round(y) >> 6 >= 0 && (int) round(y) >> 6 < prog->map.height && prog->map.data[(int) round(y) >> 6][i] == '1')
 				return ((t_point) {(i) << 6, y});
 			i++;
 			y += tmp;
@@ -311,23 +311,24 @@ int	displayray(t_prog *prog, t_data *img, t_ray *ray)
 	int		x;
 	float	slheight;
 
-	x = ray->screen_x - (1280 / 1280);
+	x = (ray->screen_x - (1280 / 1280));
 	slheight = ray->lheight;
 	if (ray->lheight > 720)
 		ray->lheight = 720;
+	printf("%f: %f\n",ray->rot, ray->dist);
 	while (x < ray->screen_x + (1280 / 1280))
 	{
 		y = 360 - ((int) ray->lheight / 2);
 		while (x >= 0 && x < 1280 && y <= 360 + ((int) ray->lheight / 2))
 		{
 			if (ray->side == 1 && ray->rot > 90 && ray->rot < 270)
-				ft_pixelput(img, x, y, getpixelcolor(&prog->map.EA, (int) (((float) ((ray->point.y - ((ray->point.y >> 6) << 6))) / 64.f) * 256),  (int) ((float) ((float) (y - (360 - ((int) ray->lheight / 2)) + ((slheight - ray->lheight) / 2)) / (float) slheight) * 256.f)));
+				ft_pixelput(img, x, y, getpixelcolor(&prog->map.EA, (int) (((float) (fmod(ray->point.y, 64) * 256) / 64.f)),  (int) ((float) ((float) (y - (360 - ((int) ray->lheight / 2)) + ((slheight - ray->lheight) / 2)) / (float) slheight) * 256.f)));
 			else if (ray->side == 1 && (ray->rot < 90 || ray->rot > 270))
-				ft_pixelput(img, x, y, getpixelcolor(&prog->map.WE, (int) (((float) ((ray->point.y - ((ray->point.y >> 6) << 6))) / 64.f) * 256),  (int) ((float) ((float) (y - (360 - ((int) ray->lheight / 2)) + ((slheight - ray->lheight) / 2)) / (float) slheight) * 256.f)));
+				ft_pixelput(img, x, y, getpixelcolor(&prog->map.WE, (int) (((float) (fmod(ray->point.y, 64) * 256) / 64.f)),  (int) ((float) ((float) (y - (360 - ((int) ray->lheight / 2)) + ((slheight - ray->lheight) / 2)) / (float) slheight) * 256.f)));
 			else if (ray->side == 0 && ray->rot < 180)
-				ft_pixelput(img, x, y, getpixelcolor(&prog->map.NO, (int) (((float) ((ray->point.x - ((ray->point.x >> 6) << 6))) / 64.f) * 256),  (int) ((float) ((float) (y - (360 - ((int) ray->lheight / 2)) + ((slheight - ray->lheight) / 2)) / (float) slheight) * 256.f)));
+				ft_pixelput(img, x, y, getpixelcolor(&prog->map.NO, (int) (((float) (fmod(ray->point.x, 64) * 500) / 64.f)),  (int) ((float) ((float) (y - (360.0 - ( ray->lheight / 2.0)) + ((slheight - ray->lheight) / 2.0)) / (float) slheight) * 500.f)));
 			else if (ray->side == 0 && ray->rot > 180)
-				ft_pixelput(img, x, y, getpixelcolor(&prog->map.SO, (int) (((float) ((ray->point.x - ((ray->point.x >> 6) << 6))) / 64.f) * 256),  (int) ((float) ((float) (y - (360 - ((int) ray->lheight / 2)) + ((slheight - ray->lheight) / 2)) / (float) slheight) * 256.f)));
+				ft_pixelput(img, x, y, getpixelcolor(&prog->map.SO, (int) (((float) (fmod(ray->point.x, 64) * 256) / 64.f)),  (int) ((float) ((float) (y - (360 - ((int) ray->lheight / 2)) + ((slheight - ray->lheight) / 2)) / (float) slheight) * 256.f)));
 			else
 				ft_pixelput(img, x, y, itoargb(255, 0, 230, 0));
 			y++;
@@ -346,14 +347,13 @@ int	raycast(t_prog *prog, t_data *img)
 		//getdistance(prog, irot, img);
 	/* if (rot == prog->player.rot - 30)
 		printf("%f %i\n", rot, prog->player.rot + 30); */
-	printf("rot: %f\n", rot);
+		printf("top\n");
 	while (rot <= (float) (prog->player.rot + 30)) {
 		ray.rot = rot;
 		if (ray.rot > 359.0)
 			ray.rot -= 360.0;
 		else if (ray.rot < 0.0)
 			ray.rot += 360.0;
-		printf("%f\n", ray.rot);
 		ray.dist = getdistance(prog, &ray);
 		ray.lheight = 720 / ((sqrt(ray.dist) / 64) * cos(degtorad(ray.rot - (float) prog->player.rot)));
 		ray.lheight *= (float) ((float) 1280 / (float) 720);
@@ -406,8 +406,8 @@ void	displayplayer2D(t_prog *prog, t_data *img)
 		for (int y = prog->player.y - 2; y < prog->player.y + 2; y++)
 			ft_pixelput(img, x, y, itoargb(255, 230, 230, 0));
 	}
-	ft_putline(img, (t_point) {prog->player.x, prog->player.y},
-		getpointercoords(prog), itoargb(255, 230, 230, 0), 1);
+	//ft_putline(img, (t_point) {prog->player.x, prog->player.y},
+		//getpointercoords(prog), itoargb(255, 230, 230, 0), 1);
 }
 
 int	loop(t_prog	*prog)
@@ -487,7 +487,7 @@ int	keypress(int key, t_prog *prog)
 void	openimages(t_prog *prog){
 	int	w;
 	int	h;
-	prog->map.NO.img = mlx_xpm_file_to_image(prog->mlx, "./NO.xpm", &w, &h);
+	prog->map.NO.img = mlx_xpm_file_to_image(prog->mlx, "./pixil-frame-0-_1_.xpm", &w, &h);
 	prog->map.NO.addr = mlx_get_data_addr(prog->map.NO.img, &prog->map.NO.bpp, &prog->map.NO.ll, &prog->map.NO.end);
 	prog->map.SO.img = mlx_xpm_file_to_image(prog->mlx, "./SO.xpm", &w, &h);
 	prog->map.SO.addr = mlx_get_data_addr(prog->map.SO.img, &prog->map.SO.bpp, &prog->map.SO.ll, &prog->map.SO.end);
@@ -518,7 +518,7 @@ int	main(int argc, char **argv)
 	getplayer(&prog);
 	prog.player.ix = (int) prog.player.x;
 	prog.player.iy = (int) prog.player.y;
-	prog.player.rot = 45;
+	prog.player.rot = 90;
 	mlx_hook(prog.win, 2, 1L << 0, keypress, &prog);
 	mlx_loop_hook(prog.mlx, loop, &prog);
 	mlx_loop(prog.mlx);

@@ -6,7 +6,7 @@
 /*   By: fghysbre <fghysbre@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 22:56:16 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/11/01 15:06:52 by fghysbre         ###   ########.fr       */
+/*   Updated: 2024/11/04 18:45:36 by fghysbre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #define	TILE_RESX 64
 #define	TILE_RESY 64
 #define PI 3.1415926
+#define DEG 0.0174533
 
 typedef struct	s_data {
 	void	*img;

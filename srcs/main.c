@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fghysbre <fghysbre@student.s19.be>         +#+  +:+       +#+        */
+/*   By: fghysbre <fghysbre@stduent.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 22:56:14 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/11/04 23:29:09 by fghysbre         ###   ########.fr       */
+/*   Updated: 2024/11/05 16:41:25 by fghysbre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,8 +147,8 @@ void	ft_putline(t_data *data, t_point p1, t_point p2, int color, int width)
 	if (!width)
 		return ;
 	p1.x = (int) p1.x; p1.y = (int) p1.y; p2.x = (int) p2.x; p2.y = (int) p2.y;
-	dx = fabs(p2.x - p1.x);
-	dy = fabs(p2.y - p1.y);
+	dx = abs((int) (p2.x - p1.x));
+	dy = abs((int) (p2.y - p1.y));
 	if (p1.x < p2.x)
 		sx = 1;
 	else
@@ -162,12 +162,13 @@ void	ft_putline(t_data *data, t_point p1, t_point p2, int color, int width)
 	{
 		for (int i = -width / 2; i <= width / 2; i++)
 		{
-			if (dx > dy)
+			//printf("%f %f	%f %f\n", (p1.x), (p1.y) + i, (p1.x) + i, p1.y);
+			if (dx > dy && ((int) p1.x) >= 0 && ((int) p1.y) + i >= 0)
 				ft_pixelput(data, ((int) p1.x), ((int) p1.y) + i, color);
-			else
+			else if (((int) p1.x) + i >= 0 && ((int) p1.y) >= 0)
 				ft_pixelput(data, ((int) p1.x) + i, (int) p1.y, color);
 		}
-		if (p1.x == p2.x && p1.y == p2.y)
+		if ((int) p1.x == (int) p2.x && (int) p1.y == (int) p2.y)
 			break ;
 		e2 = 2 * err;
 		if (e2 > -dy)
@@ -213,13 +214,13 @@ int	displayray(t_prog *prog, t_data *img, t_ray *ray)
 		y = 360 - ((int) ray->lheight / 2);
 		while (x >= 0 && x < 1280 && y <= 360 + ((int) ray->lheight / 2))
 		{
-			if (ray->side == 1 && ray->rot > 90 && ray->rot < 270)
+			if (ray->side == 1 && ray->rot > PI / 2 && ray->rot < 3 * PI / 2)
 				ft_pixelput(img, x, y, getpixelcolor(&prog->map.EA, (int) (((float) (fmod(ray->point.y, 64) * 256) / 64.f)),  (int) ((float) ((float) (y - (360 - ((int) ray->lheight / 2)) + ((slheight - ray->lheight) / 2)) / (float) slheight) * 256.f)));
-			else if (ray->side == 1 && (ray->rot < 90 || ray->rot > 270))
+			else if (ray->side == 1 && (ray->rot < PI / 2 || ray->rot > 3 * PI / 2))
 				ft_pixelput(img, x, y, getpixelcolor(&prog->map.WE, (int) (((float) (fmod(ray->point.y, 64) * 256) / 64.f)),  (int) ((float) ((float) (y - (360 - ((int) ray->lheight / 2)) + ((slheight - ray->lheight) / 2)) / (float) slheight) * 256.f)));
-			else if (ray->side == 0 && ray->rot < 180)
+			else if (ray->side == 0 && ray->rot < PI)
 				ft_pixelput(img, x, y, getpixelcolor(&prog->map.NO, (int) (((float) (fmod(ray->point.x, 64) * 256) / 64.f)),  (int) ((float) ((float) (y - (360.0 - ( ray->lheight / 2.0)) + ((slheight - ray->lheight) / 2.0)) / (float) slheight) * 256.f)));
-			else if (ray->side == 0 && ray->rot > 180)
+			else if (ray->side == 0 && ray->rot > PI)
 				ft_pixelput(img, x, y, getpixelcolor(&prog->map.SO, (int) (((float) (fmod(ray->point.x, 64) * 256) / 64.f)),  (int) ((float) ((float) (y - (360 - ((int) ray->lheight / 2)) + ((slheight - ray->lheight) / 2)) / (float) slheight) * 256.f)));
 			else
 				ft_pixelput(img, x, y, itoargb(255, 0, 230, 0));
@@ -284,7 +285,7 @@ void	raycast(t_prog *prog, t_data *img) {
 				rx += xo; ry += yo; dof+=1;
 			}
 		}
-		if (disV < disH) {ray.point.x = vx; ray.point.y = vy; ray.dist = disV; ray.side = 0;}
+		if (disV <= disH) {ray.point.x = vx; ray.point.y = vy; ray.dist = disV; ray.side = 0;}
 		if (disH < disV) {ray.point.x = hx; ray.point.y = hy; ray.dist = disH; ray.side = 1;}
 		float	ca = degtorad(prog->player.rot) - ra;
 		if (ca < 0)
@@ -292,7 +293,8 @@ void	raycast(t_prog *prog, t_data *img) {
 		if (ca > 2 * PI)
 			ca -= 2 * PI;
 		ray.dist = ray.dist * cos(ca);
-		//ft_putline(img, (t_point) {prog->player.x, prog->player.y}, (t_point) {rx, ry}, itoargb(255, 0, 255, 0), 1);
+		printf("%f: {%f, %f} {%f, %f}\n", radtodeg(ra), vx, vy, hx, hy);
+		//ft_putline(img, (t_point) {prog->player.x, prog->player.y}, ray.point, itoargb(255, 0, 255, 0), 1);
 		ray.lheight = (64 * 720) / ray.dist;
 		ray.screen_x = ((float) ((radtodeg(ray.rot) - (float) prog->player.rot) + 30.0) / 60) * 1280;
 		displayray(prog, img, &ray);

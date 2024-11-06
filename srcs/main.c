@@ -6,7 +6,7 @@
 /*   By: fghysbre <fghysbre@stduent.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 22:56:14 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/11/05 16:41:25 by fghysbre         ###   ########.fr       */
+/*   Updated: 2024/11/06 17:23:16 by fghysbre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,9 +184,7 @@ void	ft_putline(t_data *data, t_point p1, t_point p2, int color, int width)
 	}
 }
 
-float	dist(float ax, float ay, float bx, float by, float ang) {
-	if (ang > 1000000)
-		return (0);
+float	dist(float ax, float ay, float bx, float by) {
 	return (sqrt((bx - ax) * (bx - ax) + (by - ay) * (by - ay)));
 }
 
@@ -208,7 +206,7 @@ int	displayray(t_prog *prog, t_data *img, t_ray *ray)
 	slheight = ray->lheight;
 	if (ray->lheight > 720)
 		ray->lheight = 720;
-	printf("%f: %f\n",ray->rot, ray->dist);
+	//printf("%f: %f\n",ray->rot, ray->dist);
 	while (x <= ray->screen_x + (1280 / 480))
 	{
 		y = 360 - ((int) ray->lheight / 2);
@@ -222,8 +220,8 @@ int	displayray(t_prog *prog, t_data *img, t_ray *ray)
 				ft_pixelput(img, x, y, getpixelcolor(&prog->map.NO, (int) (((float) (fmod(ray->point.x, 64) * 256) / 64.f)),  (int) ((float) ((float) (y - (360.0 - ( ray->lheight / 2.0)) + ((slheight - ray->lheight) / 2.0)) / (float) slheight) * 256.f)));
 			else if (ray->side == 0 && ray->rot > PI)
 				ft_pixelput(img, x, y, getpixelcolor(&prog->map.SO, (int) (((float) (fmod(ray->point.x, 64) * 256) / 64.f)),  (int) ((float) ((float) (y - (360 - ((int) ray->lheight / 2)) + ((slheight - ray->lheight) / 2)) / (float) slheight) * 256.f)));
-			else
-				ft_pixelput(img, x, y, itoargb(255, 0, 230, 0));
+			// else
+			// 	ft_pixelput(img, x, y, itoargb(255, 0, 230, 0));
 			y++;
 		}
 		x++;
@@ -258,7 +256,7 @@ void	raycast(t_prog *prog, t_data *img) {
 			if (mp >= prog->map.width * prog->map.height)
 				dof = 8;
 			if ((mx >= 0 && mx < prog->map.width && my >= 0 && my < prog->map.height) && prog->map.data[my][mx] == '1') {
-				hx = rx; hy = ry; disH = dist(prog->player.x, prog->player.y, hx, hy, ra); break;
+				hx = rx; hy = ry; disH = dist(prog->player.x, prog->player.y, hx, hy); break;
 			} else {
 				rx += xo; ry += yo; dof+=1;
 			}
@@ -279,7 +277,7 @@ void	raycast(t_prog *prog, t_data *img) {
 			if (mp >= prog->map.width * prog->map.height)
 				dof = 8;
 			if ((mx >= 0 && mx < prog->map.width && my >= 0 && my < prog->map.height) && prog->map.data[my][mx] == '1') {
-				vx = rx; vy = ry; disV = dist(prog->player.x, prog->player.y, vx, vy, ra); break ;
+				vx = rx; vy = ry; disV = dist(prog->player.x, prog->player.y, vx, vy); break ;
 			}
 			else {
 				rx += xo; ry += yo; dof+=1;
@@ -293,7 +291,6 @@ void	raycast(t_prog *prog, t_data *img) {
 		if (ca > 2 * PI)
 			ca -= 2 * PI;
 		ray.dist = ray.dist * cos(ca);
-		printf("%f: {%f, %f} {%f, %f}\n", radtodeg(ra), vx, vy, hx, hy);
 		//ft_putline(img, (t_point) {prog->player.x, prog->player.y}, ray.point, itoargb(255, 0, 255, 0), 1);
 		ray.lheight = (64 * 720) / ray.dist;
 		ray.screen_x = ((float) ((radtodeg(ray.rot) - (float) prog->player.rot) + 30.0) / 60) * 1280;
@@ -351,12 +348,63 @@ void	displayplayer2D(t_prog *prog, t_data *img)
 		//getpointercoords(prog), itoargb(255, 230, 230, 0), 1);
 }
 
+void	updateplayer(t_prog *prog)
+{
+	float	dx;
+	float	dy;
+	double	oldx;
+	double	oldy;
+	if ((prog->keys >> 5) % 2)
+		prog->player.rot += 1;
+	if ((prog->keys >> 4) % 2)
+		prog->player.rot -= 1;
+	if (prog->player.rot > 359)
+		prog->player.rot -= 360;
+	if (prog->player.rot < 0)
+		prog->player.rot += 360;
+	dx = cos(degtorad(prog->player.rot)) * 2.5;
+	dy = sin(degtorad(prog->player.rot)) * 2.5;
+	oldx = prog->player.x;
+	oldy = prog->player.y;
+	if (prog->keys % 2)
+	{
+		prog->player.x += dx;
+		prog->player.y += dy;
+	}
+	if ((prog->keys >> 1) % 2)
+	{
+		prog->player.x -= dx;
+		prog->player.y -= dy;
+	}
+	if (prog->keys & KEY_RIGHT)
+	{
+		prog->player.x -= dy;
+		prog->player.y += dx;
+	}
+	if (prog->keys & KEY_LEFT)
+	{
+		prog->player.x += dy;
+		prog->player.y -= dx;
+	}
+	if (prog->map.data[(int) prog->player.y >> 6][(int) oldx >> 6] == '1')
+		prog->player.y = oldy;
+	if (prog->map.data[(int) oldy >> 6][(int) prog->player.x >> 6] == '1')
+		prog->player.x = oldx;
+	if (prog->map.data[(int) prog->player.y >> 6][(int) prog->player.x >> 6] == '1' &&
+		prog->map.data[(int) prog->player.y >> 6][(int) oldx >> 6] != '1' && prog->map.data[(int) oldy >> 6][(int) prog->player.x >> 6] != '1')
+	{
+		prog->player.x = oldx;
+		prog->player.y = oldy;
+	}
+}
+
 int	loop(t_prog	*prog)
 {
 	t_data	img;
 
 	img.img = mlx_new_image(prog->mlx, 1280, 720);
 	img.addr = mlx_get_data_addr(img.img, &img.bpp, &img.ll, &img.end);
+	updateplayer(prog);
 	//display2D(prog, &img);
 	//displayplayer2D(prog, &img);
 	raycast(prog, &img);
@@ -369,6 +417,7 @@ int	loop(t_prog	*prog)
 	} */
 	mlx_put_image_to_window(prog->mlx, prog->win, img.img, 0, 0);
 	mlx_destroy_image(prog->mlx, img.img);
+	printf("%d\n", prog->keys);
 	return (1);
 }
 
@@ -403,7 +452,7 @@ int	getplayer(t_prog *prog)
 
 int	keypress(int key, t_prog *prog)
 {
-	if (key == 65363)
+	/* if (key == 65363)
 	{
 		prog->player.rot += 1;
 		if (prog->player.rot > 359)
@@ -414,14 +463,40 @@ int	keypress(int key, t_prog *prog)
 		prog->player.rot -= 1;
 		if (prog->player.rot < 0)
 			prog->player.rot += 360;
-	}
-	else if (key == 119)
-	{
-		prog->player.x -= cos(degtorad((double) prog->player.rot)) * 3;
-		prog->player.y -= sin(degtorad((double) prog->player.rot)) * 3;
-	}
+	} */
+	if (key == 'w')
+		prog->keys = prog->keys | KEY_UP;
+		// prog->player.x -= cos(degtorad((double) prog->player.rot)) * 3;
+		// prog->player.y -= sin(degtorad((double) prog->player.rot)) * 3;
+	else if (key == 's')
+		prog->keys = prog->keys | KEY_DOWN;
+	else if (key == 'a')
+		prog->keys = prog->keys | KEY_LEFT;
+	else if (key == 'd')
+		prog->keys = prog->keys | KEY_RIGHT;
+	else if (key == 65363)
+		prog->keys = prog->keys | KEY_ARRRIGHT;
+	else if (key == 65361)
+		prog->keys = prog->keys | KEY_ARRLEFT;
 	prog->player.ix = (int) prog->player.x;
 	prog->player.iy = (int) prog->player.y;
+	return (1);
+}
+
+int	keyrelease(int key, t_prog *prog)
+{
+	if (key == 'w')
+		prog->keys = prog->keys & ~(KEY_UP);
+	if (key == 's')
+		prog->keys = prog->keys & ~(KEY_DOWN);
+	if (key == 'a')
+		prog->keys = prog->keys & ~(KEY_LEFT);
+	if (key == 'd')
+		prog->keys = prog->keys & ~(KEY_RIGHT);
+	if (key == 65363)
+		prog->keys = prog->keys & ~(KEY_ARRRIGHT);
+	if (key == 65361)
+		prog->keys = prog->keys & ~(KEY_ARRLEFT);
 	return (1);
 }
 
@@ -437,6 +512,8 @@ void	openimages(t_prog *prog){
 	prog->map.WE.img = mlx_xpm_file_to_image(prog->mlx, "./EA.xpm", &w, &h);
 	prog->map.WE.addr = mlx_get_data_addr(prog->map.WE.img, &prog->map.WE.bpp, &prog->map.WE.ll, &prog->map.WE.end);
 }
+
+
 
 int	main(int argc, char **argv)
 {
@@ -460,7 +537,9 @@ int	main(int argc, char **argv)
 	prog.player.ix = (int) prog.player.x;
 	prog.player.iy = (int) prog.player.y;
 	prog.player.rot = 270;
+	prog.keys = 0;
 	mlx_hook(prog.win, 2, 1L << 0, keypress, &prog);
+	mlx_hook(prog.win, 3, 1L << 1, keyrelease, &prog);
 	mlx_loop_hook(prog.mlx, loop, &prog);
 	mlx_loop(prog.mlx);
 }

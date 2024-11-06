@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cube.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fghysbre <fghysbre@student.s19.be>         +#+  +:+       +#+        */
+/*   By: fghysbre <fghysbre@stduent.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 22:56:16 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/11/04 18:45:36 by fghysbre         ###   ########.fr       */
+/*   Updated: 2024/11/06 16:36:49 by fghysbre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,13 @@
 #define	TILE_RESY 64
 #define PI 3.1415926
 #define DEG 0.0174533
+
+#define KEY_UP 1 << 0
+#define KEY_DOWN 1 << 1
+#define KEY_LEFT 1 << 2
+#define KEY_RIGHT 1 << 3
+#define KEY_ARRLEFT 1 << 4
+#define KEY_ARRRIGHT 1 << 5
 
 typedef struct	s_data {
 	void	*img;
@@ -78,4 +85,5 @@ typedef struct s_prog
 	void	*win;
 	t_map	map;
 	t_plyr	player;
+	char	keys;
 }	t_prog;

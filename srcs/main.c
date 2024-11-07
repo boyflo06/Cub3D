@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fghysbre <fghysbre@stduent.s19.be>         +#+  +:+       +#+        */
+/*   By: fghysbre <fghysbre@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 22:56:14 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/11/06 17:23:16 by fghysbre         ###   ########.fr       */
+/*   Updated: 2024/11/07 16:18:56 by fghysbre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -398,12 +398,23 @@ void	updateplayer(t_prog *prog)
 	}
 }
 
+void	updatemouse(t_prog *prog)
+{
+	int	x;
+	int	y;
+
+	mlx_mouse_get_pos(prog->mlx, prog->win, &x, &y);
+	prog->player.rot += x - 640;
+	mlx_mouse_move(prog->mlx, prog->win, 640, 360);
+}
+
 int	loop(t_prog	*prog)
 {
 	t_data	img;
 
 	img.img = mlx_new_image(prog->mlx, 1280, 720);
 	img.addr = mlx_get_data_addr(img.img, &img.bpp, &img.ll, &img.end);
+	updatemouse(prog);
 	updateplayer(prog);
 	//display2D(prog, &img);
 	//displayplayer2D(prog, &img);
@@ -538,6 +549,7 @@ int	main(int argc, char **argv)
 	prog.player.iy = (int) prog.player.y;
 	prog.player.rot = 270;
 	prog.keys = 0;
+	mlx_mouse_hide(prog.mlx, prog.win);
 	mlx_hook(prog.win, 2, 1L << 0, keypress, &prog);
 	mlx_hook(prog.win, 3, 1L << 1, keyrelease, &prog);
 	mlx_loop_hook(prog.mlx, loop, &prog);

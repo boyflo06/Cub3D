@@ -6,7 +6,7 @@
 /*   By: fghysbre <fghysbre@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 22:56:14 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/11/07 16:18:56 by fghysbre         ###   ########.fr       */
+/*   Updated: 2024/11/07 17:59:48 by fghysbre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,7 +230,7 @@ int	displayray(t_prog *prog, t_data *img, t_ray *ray)
 }
 
 void	raycast(t_prog *prog, t_data *img) {
-	int		r, mx, my, mp, dof;
+	int		r, mx, my, dof;
 	double	rx, ry, ra, xo, yo;
 	t_ray	ray;
 	
@@ -249,13 +249,13 @@ void	raycast(t_prog *prog, t_data *img) {
 		} if (ra < PI) {
 			ry = (((int) prog->player.y >> 6) << 6) + 64; rx = (prog->player.y - ry) * aTan + prog->player.x; yo = 64; xo = -yo * aTan;
 		} if (ra == 0 || ra == PI) {
-			rx = prog->player.x; ry = prog->player.y; dof = 8;
+			rx = prog->player.x; ry = prog->player.y; dof = -1;
 		}
-		while (dof < 8) {
-			mx = (int) rx >> 6; my = (int) ry >> 6; mp = my * prog->map.width + mx;
-			if (mp >= prog->map.width * prog->map.height)
-				dof = 8;
-			if ((mx >= 0 && mx < prog->map.width && my >= 0 && my < prog->map.height) && prog->map.data[my][mx] == '1') {
+		while (dof >= 0) {
+			mx = (int) rx >> 6; my = (int) ry >> 6;
+			if ((mx < 0 || mx >= prog->map.width || my < 0 || my >= prog->map.height))
+				break ;
+			if (prog->map.data[my][mx] == '1') {
 				hx = rx; hy = ry; disH = dist(prog->player.x, prog->player.y, hx, hy); break;
 			} else {
 				rx += xo; ry += yo; dof+=1;
@@ -270,13 +270,14 @@ void	raycast(t_prog *prog, t_data *img) {
 		} if (ra < PI / 2 || ra > 3 * PI / 2) {
 			rx = (((int) prog->player.x >> 6) << 6) + 64; ry = (prog->player.x - rx) * nTan + prog->player.y; xo = 64; yo = -xo * nTan;
 		} if (ra == PI / 2 || ra == 3 * PI / 2) {
-			rx = prog->player.x; ry = prog->player.y; dof = 8;
+			rx = prog->player.x; ry = prog->player.y; dof = -1;
 		}
-		while (dof < 8) {
-			mx = (int) rx >> 6; my = (int) ry >> 6; mp = my * prog->map.width + mx;
-			if (mp >= prog->map.width * prog->map.height)
-				dof = 8;
-			if ((mx >= 0 && mx < prog->map.width && my >= 0 && my < prog->map.height) && prog->map.data[my][mx] == '1') {
+		while (dof >= 0) {
+			printf("%d\n", dof);
+			mx = (int) rx >> 6; my = (int) ry >> 6;
+			if ((mx < 0 || mx >= prog->map.width || my < 0 || my >= prog->map.height))
+				break ;
+			if (prog->map.data[my][mx] == '1') {
 				vx = rx; vy = ry; disV = dist(prog->player.x, prog->player.y, vx, vy); break ;
 			}
 			else {
@@ -414,7 +415,8 @@ int	loop(t_prog	*prog)
 
 	img.img = mlx_new_image(prog->mlx, 1280, 720);
 	img.addr = mlx_get_data_addr(img.img, &img.bpp, &img.ll, &img.end);
-	updatemouse(prog);
+	if (prog->keys & KEY_TOGMOUSE)
+		updatemouse(prog);
 	updateplayer(prog);
 	//display2D(prog, &img);
 	//displayplayer2D(prog, &img);
@@ -463,22 +465,8 @@ int	getplayer(t_prog *prog)
 
 int	keypress(int key, t_prog *prog)
 {
-	/* if (key == 65363)
-	{
-		prog->player.rot += 1;
-		if (prog->player.rot > 359)
-			prog->player.rot -= 360;
-	}
-	else if (key == 65361)
-	{
-		prog->player.rot -= 1;
-		if (prog->player.rot < 0)
-			prog->player.rot += 360;
-	} */
 	if (key == 'w')
 		prog->keys = prog->keys | KEY_UP;
-		// prog->player.x -= cos(degtorad((double) prog->player.rot)) * 3;
-		// prog->player.y -= sin(degtorad((double) prog->player.rot)) * 3;
 	else if (key == 's')
 		prog->keys = prog->keys | KEY_DOWN;
 	else if (key == 'a')
@@ -489,8 +477,10 @@ int	keypress(int key, t_prog *prog)
 		prog->keys = prog->keys | KEY_ARRRIGHT;
 	else if (key == 65361)
 		prog->keys = prog->keys | KEY_ARRLEFT;
-	prog->player.ix = (int) prog->player.x;
-	prog->player.iy = (int) prog->player.y;
+	else if (key == 'v' && !(prog->keys & KEY_TOGMOUSE))
+		prog->keys = prog->keys | KEY_TOGMOUSE;
+	else if (key == 'v' && (prog->keys & KEY_TOGMOUSE))
+		prog->keys = prog->keys & ~(KEY_TOGMOUSE);
 	return (1);
 }
 

@@ -1,4 +1,8 @@
-SRCS = srcs/main.c
+SRCS = srcs/main.c srcs/init.c srcs/map.c srcs/player.c srcs/hooks.c srcs/freem.c \
+	srcs/utils.c \
+	${RYCST}
+
+RYCST = srcs/raycast/raycast.c srcs/raycast/raycast_h.c srcs/raycast/raycast_v.c
 
 INC = -I./includes -I./mlx -I./libft
 

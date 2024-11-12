@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cube.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fghysbre <fghysbre@student.s19.be>         +#+  +:+       +#+        */
+/*   By: fghysbre <fghysbre@stduent.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 22:56:16 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/11/11 16:48:41 by fghysbre         ###   ########.fr       */
+/*   Updated: 2024/11/12 14:25:04 by fghysbre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@
 #define KEY_ARRRIGHT 1 << 5
 #define	KEY_TOGMOUSE 1 << 6
 
-#define WIN_H 720
-#define WIN_W 1280
+#define WIN_H 1000
+#define WIN_W 1000
 
 typedef struct	s_data {
 	void	*img;

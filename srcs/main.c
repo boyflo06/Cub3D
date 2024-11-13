@@ -6,7 +6,7 @@
 /*   By: mleonet <mleonet@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 22:56:14 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/11/13 19:21:21 by mleonet          ###   ########.fr       */
+/*   Updated: 2024/11/13 19:50:23 by mleonet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,6 @@ int	check_rgb(char **arr)
 	int	j;
 
 	i = 0;
-	j = 0;
 	while (arr[i])
 	{
 		j = 0;
@@ -143,7 +142,6 @@ int	check_rgb(char **arr)
 int	assign_rgb(char *str)
 {
 	char	**arr;
-	int		i;
 	int		tmp;
 
 	str = rem_spaces(str);
@@ -153,9 +151,6 @@ int	assign_rgb(char *str)
 	free(str);
 	if (!arr)
 		return (0);
-	i = 0;
-	while (arr[i])
-		i++;
 	if (!check_rgb(arr))
 	{
 		free_tab(arr);
@@ -195,7 +190,6 @@ int	check_file_content(t_prog *prog)
 	prog->map.SO_src = rem_spaces(prog->map.SO_src);
 	prog->map.WE_src = rem_spaces(prog->map.WE_src);
 	prog->map.EA_src = rem_spaces(prog->map.EA_src);
-	printf("NO: %s\nSO: %s\nWE: %s\nEA: %s\nF: %d\nC: %d\n", prog->map.NO_src, prog->map.SO_src, prog->map.WE_src, prog->map.EA_src, prog->map.F, prog->map.C);
 	return (1);
 }
 

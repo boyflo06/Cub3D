@@ -6,7 +6,7 @@
 /*   By: mleonet <mleonet@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 22:56:14 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/11/14 18:14:37 by mleonet          ###   ########.fr       */
+/*   Updated: 2024/11/14 23:40:29 by mleonet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,13 @@ void	free_prog(t_prog *prog)
 		while (prog->map.data[++i])
 			free(prog->map.data[i]);
 		free(prog->map.data);
+	}
+	if (prog->win)
+		mlx_destroy_window(prog->mlx, prog->win);
+	if (prog->mlx)
+	{
+		mlx_destroy_display(prog->mlx);
+		free(prog->mlx);
 	}
 }
 
@@ -162,7 +169,7 @@ int	assign_rgb(char *str)
 	return (tmp);
 }
 
-int check_textures_format(char *str)
+int	check_textures_format(char *str)
 {
 	if (ft_strlen(str) < 5)
 		return (0);
@@ -240,33 +247,90 @@ int	check_file_format(t_prog *prog, char *path)
 	return (1);
 }
 
+char	*skip_until_map(int fd, char *buff)
+{
+	char	*tmp;
+	char	*tmp2;
+
+	tmp = NULL;
+	tmp2 = NULL;
+	while (buff && (ft_strchr(buff, '1') == 0
+			|| ft_strchr("CFNOSEW", buff[0])))
+	{
+		if (tmp2)
+			free(tmp2);
+		free(buff);
+		tmp = get_next_line(fd);
+		tmp2 = ft_strdup(tmp);
+		buff = ft_strtrim(tmp, " ");
+		free(tmp);
+	}
+	free(buff);
+	return (tmp2);
+}
+
+void	push_to_map(t_prog *prog, char *buff)
+{
+	char	*tmp;
+	char	**arrtmp;
+
+	if (ft_strrchr(buff, '\n') && ft_strrchr(buff, '\n')[1] == 0)
+		tmp = ft_substr(buff, 0, ft_strlen(buff) - 1);
+	else
+		tmp = ft_strdup(buff);
+	arrtmp = prog->map.data;
+	prog->map.data = ft_strarrpush(arrtmp, tmp);
+	free(arrtmp);
+}
+
+int	check_file_map(char *buff, int fd)
+{
+	char	*tmp;
+
+	tmp = ft_strtrim(buff, " \n");
+	if (!tmp)
+	{
+		free(buff);
+		close(fd);
+		return (write(2, "Error\nCub3D: Map has empty lines\n", 34) - 34);
+	}
+	if (ft_strlen(tmp) == 0)
+	{
+		free(tmp);
+		free(buff);
+		close(fd);
+		return (write(2, "Error\nCub3D: Map has empty lines\n", 34) - 34);
+	}
+	free(tmp);
+	return (1);
+}
+
 int	getmap(t_prog *prog, char *path)
 {
 	int		fd;
 	char	*buff;
-	char	*tmp;
-	char	**arrtmp;
 
 	prog->map.data = NULL;
 	fd = open(path, O_RDONLY);
 	if (fd == -1)
 		return (0);
 	buff = get_next_line(fd);
+	buff = skip_until_map(fd, buff);
+	if (!buff)
+	{
+		close(fd);
+		return (write(2, "Error\nCub3D: No map in file\n", 28) - 28);
+	}
 	while (buff)
 	{
+		if (!check_file_map(buff, fd))
+			return (0);
 		if (ft_strlen(buff) > 1)
-		{
-			if (ft_strrchr(buff, '\n') && ft_strrchr(buff, '\n')[1] == 0)
-				tmp = ft_substr(buff, 0, ft_strlen(buff) - 1);
-			else
-				tmp = ft_strdup(buff);
-			arrtmp = prog->map.data;
-			prog->map.data = ft_strarrpush(arrtmp, tmp);
-			free(arrtmp);
-		}
+			push_to_map(prog, buff);
 		free(buff);
 		buff = get_next_line(fd);
 	}
+	close(fd);
 	return (1);
 }
 
@@ -650,7 +714,7 @@ int	loop(t_prog	*prog)
 	} */
 	mlx_put_image_to_window(prog->mlx, prog->win, img.img, 0, 0);
 	mlx_destroy_image(prog->mlx, img.img);
-	printf("%d\n", prog->keys);
+	//printf("%d\n", prog->keys);
 	return (1);
 }
 
@@ -750,7 +814,10 @@ int	main(int argc, char **argv)
 	if (!prog.win)
 		return (1);
 	if (!getmap(&prog, argv[1]))
+	{
+		free_prog(&prog);
 		return (1);
+	}
 	int i;
 	for (i = 0; prog.map.data[i]; i++)
 		;

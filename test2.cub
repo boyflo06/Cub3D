@@ -1,18 +1,18 @@
         NO                 ./textures/NO.xpm   
-SO   ./textures/SO.xpm
+  SO   ./textures/SO.xpm
 
-WE     ./textures/EA.xpm
-EA   ./textures/WE.xpm
+  WE     ./textures/EA.xpm
+   EA   ./textures/WE.xpm
 
-F    255  ,  248  ,  220
-
-
+       F    251  ,  248  ,  220   
 
 
-C 125   ,206,  101
 
-111111
-100011
-100001
+    C      251  ,  248  ,  220     
+
+
+111111     
+ 100011
+100001     
 1S0001
-111111
+111111  

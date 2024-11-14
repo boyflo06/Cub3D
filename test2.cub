@@ -1,8 +1,8 @@
-NO                 ./textures/colorstone.xpm
-SO   ./textures/greystone.xpm
+        NO                 ./textures/NO.xpm   
+SO   ./textures/SO.xpm
 
-WE     ./textures/bluestone.xpm
-EA   ./textures/wood.xpm
+WE     ./textures/EA.xpm
+EA   ./textures/WE.xpm
 
 F    255  ,  248  ,  220
 

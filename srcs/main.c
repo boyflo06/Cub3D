@@ -6,7 +6,7 @@
 /*   By: mleonet <mleonet@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 22:56:14 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/11/13 19:50:23 by mleonet          ###   ########.fr       */
+/*   Updated: 2024/11/14 16:11:26 by mleonet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,35 +162,56 @@ int	assign_rgb(char *str)
 	return (tmp);
 }
 
+int check_textures_format(char *str)
+{
+	if (ft_strlen(str) < 5)
+		return (0);
+	if (ft_strncmp(str + ft_strlen(str) - 4, ".xpm", 4) != 0)
+		return (0);
+	return (1);
+}
+
+char	*assign_file(char *str)
+{
+	char	*res;
+	int		fd;
+
+	str = ft_strtrim(str, " \n");
+	if (!str)
+		return (NULL);
+	if (!check_textures_format(str))
+	{
+		free(str);
+		return (NULL);
+	}
+	fd = open(str, O_RDONLY);
+	if (fd == -1)
+	{
+		free(str);
+		return (NULL);
+	}
+	close(fd);
+	res = ft_strdup(str);
+	free(str);
+	return (res);
+}
+
 void	assign_values_file(t_prog *prog, char *line)
 {
+	while (*line == ' ')
+		line++;
 	if (ft_strncmp(line, "NO", 2) == 0)
-		prog->map.NO_src = ft_strdup(line + 2);
+		prog->map.NO_src = assign_file(line + 2);
 	else if (ft_strncmp(line, "SO", 2) == 0)
-		prog->map.SO_src = ft_strdup(line + 2);
+		prog->map.SO_src = assign_file(line + 2);
 	else if (ft_strncmp(line, "WE", 2) == 0)
-		prog->map.WE_src = ft_strdup(line + 2);
+		prog->map.WE_src = assign_file(line + 2);
 	else if (ft_strncmp(line, "EA", 2) == 0)
-		prog->map.EA_src = ft_strdup(line + 2);
+		prog->map.EA_src = assign_file(line + 2);
 	else if (ft_strncmp(line, "F", 1) == 0)
 		prog->map.F = assign_rgb(line + 1);
 	else if (ft_strncmp(line, "C", 1) == 0)
 		prog->map.C = assign_rgb(line + 1);
-}
-
-int	check_file_content(t_prog *prog)
-{
-	if (!prog->map.NO_src || !prog->map.SO_src || !prog->map.WE_src
-		|| !prog->map.EA_src || !prog->map.F || !prog->map.C)
-	{
-		free_prog(prog);
-		return (0);
-	}
-	prog->map.NO_src = rem_spaces(prog->map.NO_src);
-	prog->map.SO_src = rem_spaces(prog->map.SO_src);
-	prog->map.WE_src = rem_spaces(prog->map.WE_src);
-	prog->map.EA_src = rem_spaces(prog->map.EA_src);
-	return (1);
 }
 
 int	check_file_format(t_prog *prog, char *path)
@@ -212,7 +233,8 @@ int	check_file_format(t_prog *prog, char *path)
 		free(line);
 		line = get_next_line(fd);
 	}
-	if (!check_file_content(prog))
+	if (!prog->map.NO_src || !prog->map.SO_src || !prog->map.WE_src
+		|| !prog->map.EA_src || !prog->map.F || !prog->map.C)
 		return (0);
 	return (1);
 }
@@ -718,7 +740,10 @@ int	main(int argc, char **argv)
 	if (argc != 2)
 		return (write(2, "Cub3D: Wrong number of args (1 needed)\n", 39) - 38);
 	if (!check_file_format(&prog, argv[1]))
+	{
+		free_prog(&prog);
 		return (write(2, "Cub3D: Wrong file format\n", 26) - 25);
+	}
 	prog.mlx = mlx_init();
 	prog.win = mlx_new_window(prog.mlx, WIN_W, WIN_H, "Hello World!");
 	if (!prog.win)

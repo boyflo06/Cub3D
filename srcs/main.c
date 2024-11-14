@@ -6,7 +6,7 @@
 /*   By: mleonet <mleonet@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 22:56:14 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/11/14 16:11:26 by mleonet          ###   ########.fr       */
+/*   Updated: 2024/11/14 18:14:37 by mleonet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,22 +220,23 @@ int	check_file_format(t_prog *prog, char *path)
 	char	*line;
 
 	if (check_file_name(path) == 0)
-		return (0);
+		return (write(2, "Error\nCub3D: Wrong file name\n", 29) - 29);
 	fd = open(path, O_RDONLY);
 	if (fd == -1)
-		return (0);
+		return (write(2, "Error\nCub3D: Cannot open file\n", 30) - 30);
 	line = get_next_line(fd);
 	if (!line)
-		return (0);
+		return (write(2, "Error\nCub3D: Empty file\n", 24) - 24);
 	while (line)
 	{
 		assign_values_file(prog, line);
 		free(line);
 		line = get_next_line(fd);
 	}
+	close(fd);
 	if (!prog->map.NO_src || !prog->map.SO_src || !prog->map.WE_src
 		|| !prog->map.EA_src || !prog->map.F || !prog->map.C)
-		return (0);
+		return (write(2, "Error\nCub3D: Wrong data in file\n", 32) - 32);
 	return (1);
 }
 
@@ -738,11 +739,11 @@ int	main(int argc, char **argv)
 	t_prog	prog;
 
 	if (argc != 2)
-		return (write(2, "Cub3D: Wrong number of args (1 needed)\n", 39) - 38);
+			return (write(2, "Error\nCub3D: Wrong number of args (1 needed)\n", 45) - 44);
 	if (!check_file_format(&prog, argv[1]))
 	{
 		free_prog(&prog);
-		return (write(2, "Cub3D: Wrong file format\n", 26) - 25);
+		return (1);
 	}
 	prog.mlx = mlx_init();
 	prog.win = mlx_new_window(prog.mlx, WIN_W, WIN_H, "Hello World!");

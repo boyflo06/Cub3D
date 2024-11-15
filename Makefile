@@ -1,7 +1,7 @@
 SRCS = srcs/main.c \
 		${RYCST}
 
-RYCST = srcs/raycast/raycast.c srcs/raycast/raycast_h.c srcs/raycast/raycast_v.c
+RYCST = srcs/raycast/raycast.c srcs/raycast/raycast_h.c srcs/raycast/raycast_v.c srcs/raycast/raycast_utils.c
 
 INC = -I./includes -I./mlx -I./libft
 

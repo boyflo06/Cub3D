@@ -6,7 +6,7 @@
 /*   By: fghysbre <fghysbre@stduent.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 22:56:16 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/11/12 14:25:04 by fghysbre         ###   ########.fr       */
+/*   Updated: 2024/11/13 15:47:35 by fghysbre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <fcntl.h>
 #include <stdio.h>
 #include <math.h>
+#include <sys/time.h>
 
 
 #define	TILE_RESX 64
@@ -64,9 +65,7 @@ typedef	struct s_plyr
 {
 	double	x;
 	double	y;
-	int		ix;
-	int		iy;
-	int		rot;
+	double	rot;
 }	t_plyr;
 
 typedef struct s_point
@@ -92,6 +91,7 @@ typedef struct s_prog
 	t_map	map;
 	t_plyr	player;
 	char	keys;
+	float	fps;
 }	t_prog;
 
 typedef struct s_mlx_ptr

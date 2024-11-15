@@ -6,7 +6,7 @@
 /*   By: fghysbre <fghysbre@stduent.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 22:56:14 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/11/12 15:06:31 by fghysbre         ###   ########.fr       */
+/*   Updated: 2024/11/13 16:23:12 by fghysbre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,195 +143,6 @@ void	ft_putline(t_data *data, t_point p1, t_point p2, int color, int width)
 	}
 }
 
-float	dist(float ax, float ay, float bx, float by) {
-	return (sqrt((bx - ax) * (bx - ax) + (by - ay) * (by - ay)));
-}
-
-int	getpixelcolor(t_data *data, int	x, int y)
-{
-	char	*dst;
-
-	dst = data->addr + (y * data->ll + x * (data->bpp / 8));
-	return (*(unsigned int *)dst);
-}
-
-int	displayray(t_prog *prog, t_data *img, t_ray *ray)
-{
-	int		y;
-	int		x;
-	float	slheight;
-
-	x = (ray->screen_x - (WIN_W / 480)) - 1;
-	slheight = ray->lheight;
-	if (ray->lheight > WIN_H)
-		ray->lheight = WIN_H;
-	//printf("%f: %f\n",ray->rot, ray->dist);
-	while (x <= ray->screen_x + (WIN_W / 480))
-	{
-		y = (WIN_H / 2) - ((int) ray->lheight / 2);
-		while (x >= 0 && x < WIN_W && y <= (WIN_H / 2) + ((int) ray->lheight / 2))
-		{
-			if (ray->side == 1 && ray->rot > PI / 2 && ray->rot < 3 * PI / 2)
-				ft_pixelput(img, x, y, getpixelcolor(&prog->map.EA, (int) (((float) (fmod(ray->point.y, 64) * prog->map.EA.w) / 64.f)),  (int) ((float) ((float) (y - ((WIN_H / 2) - ((int) ray->lheight / 2)) + ((slheight - ray->lheight) / 2)) / (float) slheight) * prog->map.EA.h)));
-			else if (ray->side == 1 && (ray->rot < PI / 2 || ray->rot > 3 * PI / 2))
-				ft_pixelput(img, x, y, getpixelcolor(&prog->map.WE, (int) (((float) (fmod(ray->point.y, 64) * prog->map.WE.w) / 64.f)),  (int) ((float) ((float) (y - ((WIN_H / 2) - ((int) ray->lheight / 2)) + ((slheight - ray->lheight) / 2)) / (float) slheight) * prog->map.WE.h)));
-			else if (ray->side == 0 && ray->rot < PI)
-				ft_pixelput(img, x, y, getpixelcolor(&prog->map.NO, (int) (((float) (fmod(ray->point.x, 64) * prog->map.NO.w) / 64.f)),  (int) ((float) ((float) (y - ((WIN_H / 2) - ( ray->lheight / 2.0)) + ((slheight - ray->lheight) / 2.0)) / (float) slheight) * prog->map.NO.h)));
-			else if (ray->side == 0 && ray->rot > PI)
-				ft_pixelput(img, x, y, getpixelcolor(&prog->map.SO, (int) (((float) (fmod(ray->point.x, 64) * prog->map.SO.w) / 64.f)),  (int) ((float) ((float) (y - ((WIN_H / 2) - ((int) ray->lheight / 2)) + ((slheight - ray->lheight) / 2)) / (float) slheight) * prog->map.SO.h)));
-			// else
-			// 	ft_pixelput(img, x, y, itoargb(255, 0, 230, 0));
-			y++;
-		}
-		x++;
-	}
-	return (1);
-}
-
-t_ray	errorray()
-{
-	t_ray	res;
-	
-	res.dist = 1000000;
-	return (res);
-}
-
-void	setvarsh(t_prog *prog, double ra, t_ray *ray, t_point *off)
-{
-	float aTan;
-	
-	aTan = -1/tan(ra);
-	ray->dist = 1000000;
-	ray->point.x = prog->player.x;
-	ray->point.y = prog->player.y;
-	ray->side = 0;
-	if (ra > PI) {
-		ray->point.y = (((int) prog->player.y >> 6) << 6) - 0.0001;
-		ray->point.x = (prog->player.y - ray->point.y) * aTan + prog->player.x;
-		off->y = -64;
-		off->x = -off->y * aTan;
-	} if (ra < PI) {
-		ray->point.y = (((int) prog->player.y >> 6) << 6) + 64;
-		ray->point.x = (prog->player.y - ray->point.y) * aTan + prog->player.x;
-		off->y = 64;
-		off->x = -off->y * aTan;
-	} 
-}
-
-t_ray	raycasth(t_prog *prog, double ra)
-{
-	t_ray	res;
-	t_point	off;
-	int		mx;
-	int		my;
-
-	setvarsh(prog, ra, &res, &off);
-	if (ra == 0 || ra == PI)
-		return (errorray());
-	while (1) {
-		mx = (int) res.point.x >> 6; my = (int) res.point.y >> 6;
-		if ((mx < 0 || mx >= prog->map.width || my < 0 || my >= prog->map.height))
-			break ;
-		if (prog->map.data[my][mx] == '1') {
-			res.dist = dist(prog->player.x, prog->player.y, res.point.x, res.point.y);
-			return (res);
-		} else {
-			res.point.x += off.x; res.point.y += off.y;
-		}
-	}
-	return (errorray());
-}
-
-void	setvarsv(t_prog *prog, double ra, t_ray *ray, t_point *off)
-{
-	float nTan;
-	
-	nTan = -tan(ra);
-	ray->dist = 1000000;
-	ray->point.x = prog->player.x;
-	ray->point.y = prog->player.y;
-	ray->side = 1;
-	if (ra > PI / 2 && ra < 3 * PI / 2) {
-		ray->point.x = (((int) prog->player.x >> 6) << 6) - 0.0001;
-		ray->point.y = (prog->player.x - ray->point.x) * nTan + prog->player.y;
-		off->x = -64;
-		off->y = -off->x * nTan;
-	} if (ra < PI / 2 || ra > 3 * PI / 2) {
-		ray->point.x = (((int) prog->player.x >> 6) << 6) + 64;
-		ray->point.y = (prog->player.x - ray->point.x) * nTan + prog->player.y;
-		off->x = 64;
-		off->y = -off->x * nTan;
-	}
-}
-
-t_ray	raycastv(t_prog *prog, double ra)
-{
-	t_ray	res;
-	t_point	off;
-	int		mx;
-	int		my;
-
-	setvarsv(prog, ra, &res, &off);
-	if (ra == PI / 2 || ra == 3 * PI / 2)
-		return (errorray());
-	while (1) {
-		mx = (int) res.point.x >> 6; my = (int) res.point.y >> 6;
-		if ((mx < 0 || mx >= prog->map.width || my < 0 || my >= prog->map.height))
-			break ;
-		if (prog->map.data[my][mx] == '1') {
-			res.dist = dist(prog->player.x, prog->player.y, res.point.x, res.point.y);
-			return (res);
-		}
-		else {
-			res.point.x += off.x; res.point.y += off.y;
-		}
-	}
-	return (errorray());
-}
-
-void	raycpy(t_ray *dst, t_ray *src)
-{
-	dst->point.x = src->point.x;
-	dst->point.y = src->point.y;
-	dst->dist = src->dist;
-	dst->side = src->dist;
-}
-
-void	raycast(t_prog *prog, t_data *img) {
-	int		r;
-	double	ra;
-	t_ray	rayv;
-	t_ray	rayh;
-	
-	ra = degtorad(prog->player.rot) - (DEG * 30);
-	if (ra < 0) 
-		ra += 2 * PI;
-	if (ra > 2 * PI)
-		ra -= 2 * PI;
-	for (r = 0; r < 240; r++) {
-		rayh = raycasth(prog, ra);
-		rayv = raycastv(prog, ra);
-		
-		if (rayh.dist < rayv.dist) {rayv = rayh;}
-		float	ca = degtorad(prog->player.rot) - ra;
-		if (ca < 0)
-			ca += 2 * PI;
-		if (ca > 2 * PI)
-			ca -= 2 * PI;
-		rayv.dist = rayv.dist * cos(ca);
-		rayv.lheight = (64 * WIN_H) / rayv.dist;
-		rayv.screen_x = r * 5.333333333;
-		rayv.rot = ra;
-		displayray(prog, img, &rayv);
-
-		ra += DEG / 4;
-		if (ra < 0) 
-			ra += 2 * PI;
-		if (ra > 2 * PI)
-			ra -= 2 * PI;
-	}
-}
-
 void	display2D(t_prog *prog, t_data *img) {
 	for (int x = 0; x < WIN_W; x++) {
 		for (int y = 0; y < WIN_H; y++) {
@@ -382,15 +193,15 @@ void	updateplayer(t_prog *prog)
 	double	oldx;
 	double	oldy;
 	if ((prog->keys >> 5) % 2)
-		prog->player.rot += 1;
+		prog->player.rot += 1.0 * (60 / prog->fps);
 	if ((prog->keys >> 4) % 2)
-		prog->player.rot -= 1;
+		prog->player.rot -= 1.0 * (60 / prog->fps);
 	if (prog->player.rot > 359)
 		prog->player.rot -= 360;
 	if (prog->player.rot < 0)
 		prog->player.rot += 360;
-	dx = cos(degtorad(prog->player.rot)) * 2.5;
-	dy = sin(degtorad(prog->player.rot)) * 2.5;
+	dx = cos(degtorad(prog->player.rot)) * 2 * (60 / prog->fps);
+	dy = sin(degtorad(prog->player.rot)) * 2 * (60 / prog->fps);
 	oldx = prog->player.x;
 	oldy = prog->player.y;
 	if (prog->keys % 2)
@@ -437,26 +248,25 @@ void	updatemouse(t_prog *prog)
 
 int	loop(t_prog	*prog)
 {
-	t_data	img;
+	t_data			img;
+	static long		milisave = 0;
+	struct timeval	currenttime;
+	long			miliseconds;
 
+	gettimeofday(&currenttime, NULL);
+	miliseconds = currenttime.tv_sec * 1000 + currenttime.tv_usec / 1000;
+	if (milisave)
+		prog->fps = (1000.0 / (float) (miliseconds - milisave));
+	milisave = miliseconds;
 	img.img = mlx_new_image(prog->mlx, WIN_W, WIN_H);
 	img.addr = mlx_get_data_addr(img.img, &img.bpp, &img.ll, &img.end);
 	if (prog->keys & KEY_TOGMOUSE)
 		updatemouse(prog);
 	updateplayer(prog);
-	//display2D(prog, &img);
-	//displayplayer2D(prog, &img);
 	raycast(prog, &img);
-	/* for (float i = prog->player.rot - 30; i <= prog->player.rot + 30; i += 0.5)
-	{
-		int	tmp = getdistance(prog, i, &img);
-		printf("%f: %d\n", i, tmp);
-		if (tmp == -1)
-			printf("Error at angle: %f\n", i);
-	} */
+	printf("%d\n", prog->keys);
 	mlx_put_image_to_window(prog->mlx, prog->win, img.img, 0, 0);
 	mlx_destroy_image(prog->mlx, img.img);
-	printf("%d\n", prog->keys);
 	return (1);
 }
 
@@ -503,10 +313,12 @@ int	keypress(int key, t_prog *prog)
 		prog->keys = prog->keys | KEY_ARRRIGHT;
 	else if (key == 65361)
 		prog->keys = prog->keys | KEY_ARRLEFT;
-	else if (key == 'v' && !(prog->keys & KEY_TOGMOUSE))
+	/* else if (key == 'v' && !(prog->keys & KEY_TOGMOUSE))
 		prog->keys = prog->keys | KEY_TOGMOUSE;
 	else if (key == 'v' && (prog->keys & KEY_TOGMOUSE))
-		prog->keys = prog->keys & ~(KEY_TOGMOUSE);
+		prog->keys = prog->keys & ~(KEY_TOGMOUSE); */
+	else if (key == 'v')
+		prog->keys = prog->keys ^ KEY_TOGMOUSE;
 	return (1);
 }
 
@@ -559,13 +371,12 @@ int	main(int argc, char **argv)
 	prog.map.width = ft_strlen(prog.map.data[0]);
 	openimages(&prog);
 	getplayer(&prog);
-	prog.player.ix = (int) prog.player.x;
-	prog.player.iy = (int) prog.player.y;
 	prog.player.rot = 270;
 	prog.keys = 0;
 	mlx_mouse_hide(prog.mlx, prog.win);
 	mlx_hook(prog.win, 2, 1L << 0, keypress, &prog);
 	mlx_hook(prog.win, 3, 1L << 1, keyrelease, &prog);
 	mlx_loop_hook(prog.mlx, loop, &prog);
+	mlx_do_key_autorepeatoff(prog.mlx);
 	mlx_loop(prog.mlx);
 }

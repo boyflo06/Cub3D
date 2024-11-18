@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fghysbre <fghysbre@stduent.s19.be>         +#+  +:+       +#+        */
+/*   By: mleonet <mleonet@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 22:56:14 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/11/15 15:13:31 by fghysbre         ###   ########.fr       */
+/*   Updated: 2024/11/18 16:52:52 by mleonet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -608,23 +608,30 @@ void	openimages(t_prog *prog){
 	prog->map.WE.addr = mlx_get_data_addr(prog->map.WE.img, &prog->map.WE.bpp, &prog->map.WE.ll, &prog->map.WE.end);
 }
 
-
-
 int	main(int argc, char **argv)
 {
 	t_prog	prog;
 
 	if (argc != 2)
-			return (write(2, "Error\nCub3D: Wrong number of args (1 needed)\n", 45) - 44);
+		return (write(2, "Error\nCub3D: Wrong number of args\n", 34) - 33);
+	init_prog(&prog);
 	if (!check_file_format(&prog, argv[1]))
 	{
 		free_prog(&prog);
 		return (1);
 	}
 	prog.mlx = mlx_init();
+	if (!prog.mlx)
+	{
+		free_prog(&prog);
+		return (write(2, "Error\nCub3D: Cannot init mlx\n", 29) - 28);
+	}
 	prog.win = mlx_new_window(prog.mlx, WIN_W, WIN_H, "Hello World!");
 	if (!prog.win)
-		return (1);
+	{
+		free_prog(&prog);
+		return (write(2, "Error\nCub3D: Cannot create window\n", 34) - 33);
+	}
 	if (!getmap(&prog, argv[1]))
 	{
 		free_prog(&prog);

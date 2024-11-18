@@ -1,4 +1,5 @@
 SRCS = srcs/main.c \
+		srcs/init.c \
 		${RYCST}
 
 RYCST = srcs/raycast/raycast.c srcs/raycast/raycast_h.c srcs/raycast/raycast_v.c srcs/raycast/raycast_utils.c

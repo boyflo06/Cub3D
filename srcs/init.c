@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fghysbre <fghysbre@student.s19.be>         +#+  +:+       +#+        */
+/*   By: mleonet <mleonet@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:52:34 by mleonet           #+#    #+#             */
-/*   Updated: 2024/11/19 13:57:33 by fghysbre         ###   ########.fr       */
+/*   Updated: 2024/11/19 15:40:11 by mleonet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,8 @@ int	initprog(t_prog *prog, char *path)
 		return (write(2, "Error\nCub3D: Cannot create window\n", 34) - 34);
 	}
 	if (!getmap(prog, path) || !openimages(prog))
+		return (free_prog(prog), 0);
+	if (!parsemap(prog))
 		return (free_prog(prog), 0);
 	getplayer(prog);
 	return (1);

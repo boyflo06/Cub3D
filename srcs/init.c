@@ -6,7 +6,7 @@
 /*   By: mleonet <mleonet@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:52:34 by mleonet           #+#    #+#             */
-/*   Updated: 2024/11/19 15:40:11 by mleonet          ###   ########.fr       */
+/*   Updated: 2024/11/19 16:50:52 by mleonet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ int	openimages(t_prog *prog)
 			&prog->map.EA.w, &prog->map.EA.h);
 	prog->map.WE.img = mlx_xpm_file_to_image(prog->mlx, prog->map.WE_src,
 			&prog->map.WE.w, &prog->map.WE.h);
-	if (!prog->map.NO.img || !prog->map.SO.img || !prog->map.EA.img || !prog->map.WE.img)
+	if (!prog->map.NO.img || !prog->map.SO.img || !prog->map.EA.img
+		|| !prog->map.WE.img)
 		return (0);
 	prog->map.NO.addr = mlx_get_data_addr(prog->map.NO.img, &prog->map.NO.bpp,
 			&prog->map.NO.ll, &prog->map.NO.end);
@@ -61,6 +62,29 @@ int	openimages(t_prog *prog)
 			&prog->map.EA.ll, &prog->map.EA.end);
 	prog->map.WE.addr = mlx_get_data_addr(prog->map.WE.img, &prog->map.WE.bpp,
 			&prog->map.WE.ll, &prog->map.WE.end);
+	return (1);
+}
+
+int	parsemap(t_prog *prog)
+{
+	int		i;
+	int		j;
+	int		width;
+
+	i = 0;
+	j = 0;
+	width = 0;
+	while (prog->map.data[i])
+	{
+		j = ft_strlen(prog->map.data[i]);
+		if (j > width)
+			width = j;
+		i++;
+	}
+	prog->map.height = i;
+	prog->map.width = width;
+	if (!add_spaces_map(prog))
+		return (write(2, "Error\nCub3D: Malloc failed\n", 27) - 27);
 	return (1);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   player.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fghysbre <fghysbre@student.s19.be>         +#+  +:+       +#+        */
+/*   By: mleonet <mleonet@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 16:25:03 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/11/19 15:11:58 by fghysbre         ###   ########.fr       */
+/*   Updated: 2024/11/19 16:51:52 by mleonet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,8 @@ void	updateplayer(t_prog *prog)
 		prog->player.y = oldy;
 	if (prog->map.data[(int) oldy >> 6][(int) prog->player.x >> 6] == '1')
 		prog->player.x = oldx;
-	if (prog->map.data[(int) prog->player.y >> 6][(int) prog->player.x >> 6] == '1' &&
+	if (prog->map.data[(int) prog->player.y >> 6][(int) prog->player.x >> 6]
+		== '1' &&
 		prog->map.data[(int) prog->player.y >> 6][(int) oldx >> 6] != '1' &&
 		prog->map.data[(int) oldy >> 6][(int) prog->player.x >> 6] != '1')
 	{

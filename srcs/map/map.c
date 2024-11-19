@@ -6,7 +6,7 @@
 /*   By: mleonet <mleonet@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 14:51:14 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/11/19 16:41:13 by mleonet          ###   ########.fr       */
+/*   Updated: 2024/11/19 16:49:08 by mleonet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,28 +125,5 @@ int	add_spaces_map(t_prog *prog)
 		}
 		i++;
 	}
-	return (1);
-}
-
-int	parsemap(t_prog *prog)
-{
-	int		i;
-	int		j;
-	int		width;
-
-	i = 0;
-	j = 0;
-	width = 0;
-	while (prog->map.data[i])
-	{
-		j = ft_strlen(prog->map.data[i]);
-		if (j > width)
-			width = j;
-		i++;
-	}
-	prog->map.height = i;
-	prog->map.width = width;
-	if (!add_spaces_map(prog))
-		return (write(2, "Error\nCub3D: Malloc failed\n", 27) - 27);
 	return (1);
 }

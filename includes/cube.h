@@ -6,7 +6,7 @@
 /*   By: mleonet <mleonet@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 22:56:16 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/11/19 15:44:32 by mleonet          ###   ########.fr       */
+/*   Updated: 2024/11/19 16:50:25 by mleonet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ void	raycast(t_prog *prog, t_data *img);
 
 int		getmap(t_prog *prog, char *path);
 int		check_file_format(t_prog *prog, char *path);
-int		parsemap(t_prog *prog);
+int		add_spaces_map(t_prog *prog);
 
 // Utils
 

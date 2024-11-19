@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hooks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fghysbre <fghysbre@student.s19.be>         +#+  +:+       +#+        */
+/*   By: mleonet <mleonet@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 14:48:27 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/11/19 15:10:24 by fghysbre         ###   ########.fr       */
+/*   Updated: 2024/11/19 16:52:10 by mleonet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	loop(t_prog	*prog)
 	gettimeofday(&currenttime, NULL);
 	miliseconds = currenttime.tv_sec * 1000 + currenttime.tv_usec / 1000;
 	if (milisave)
-		prog->fps = (1000.0 / (float) (miliseconds - milisave));
+		prog->fps = (1000.0 / (float)(miliseconds - milisave));
 	milisave = miliseconds;
 	img.img = mlx_new_image(prog->mlx, WIN_W, WIN_H);
 	img.addr = mlx_get_data_addr(img.img, &img.bpp, &img.ll, &img.end);

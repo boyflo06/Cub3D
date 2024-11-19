@@ -6,7 +6,7 @@
 /*   By: fghysbre <fghysbre@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 22:56:16 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/11/19 13:01:34 by fghysbre         ###   ########.fr       */
+/*   Updated: 2024/11/19 13:42:10 by fghysbre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,9 +115,10 @@ void	free_prog(t_prog *prog);
 
 // Initialisation functions
 
-void	init_prog(t_prog *prog);
-void	init_img(t_prog *prog);
-void	init_map(t_prog *prog);
+void	default_prog(t_prog *prog);
+void	default_img(t_prog *prog);
+void	default_map(t_prog *prog);
+int		initprog(t_prog *prog, char *path);
 
 // Hooks
 

@@ -1,8 +1,8 @@
-        NO                 ./textures/NO.xpm   
-  SO   ./textures/SO.xpm
+        NO                 ./textures/knee.xpm   
+  SO   ./textures/knee.xpm
 
-  WE     ./textures/EA.xpm
-   EA   ./textures/WE.xpm
+  WE     ./textures/knee.xpm
+   EA   ./textures/knee.xpm
 
        F    251  ,  248  ,  220   
 

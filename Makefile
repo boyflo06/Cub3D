@@ -1,4 +1,4 @@
-SRCS = srcs/main.c srcs/player.c srcs/hooks.c srcs/freem.c \
+SRCS = srcs/main.c srcs/player.c srcs/hooks.c srcs/freem.c srcs/init.c \
 		${RYCST} ${MAP}
 
 RYCST = srcs/raycast/raycast.c srcs/raycast/raycast_h.c srcs/raycast/raycast_v.c srcs/raycast/raycast_utils.c

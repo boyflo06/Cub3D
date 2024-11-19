@@ -6,7 +6,7 @@
 /*   By: fghysbre <fghysbre@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 22:56:16 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/11/18 14:56:40 by fghysbre         ###   ########.fr       */
+/*   Updated: 2024/11/19 13:01:34 by fghysbre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,8 @@
 #include <math.h>
 #include <sys/time.h>
 
-
-#define	TILE_RESX 64
-#define	TILE_RESY 64
+#define TILE_RESX 64
+#define TILE_RESY 64
 #define PI 3.1415926
 #define DEG 0.0174533
 
@@ -29,12 +28,13 @@
 #define KEY_RIGHT 1 << 3
 #define KEY_ARRLEFT 1 << 4
 #define KEY_ARRRIGHT 1 << 5
-#define	KEY_TOGMOUSE 1 << 6
+#define KEY_TOGMOUSE 1 << 6
 
 #define WIN_H 1000
 #define WIN_W 1000
 
-typedef struct	s_data {
+typedef struct s_data
+{
 	void	*img;
 	char	*addr;
 	int		bpp;
@@ -44,7 +44,7 @@ typedef struct	s_data {
 	int		h;
 }	t_data;
 
-typedef	struct s_map
+typedef struct s_map
 {
 	char	**data;
 	char	*NO_src;
@@ -61,7 +61,7 @@ typedef	struct s_map
 	int		height;
 }	t_map;
 
-typedef	struct s_plyr
+typedef struct s_plyr
 {
 	double	x;
 	double	y;
@@ -77,11 +77,11 @@ typedef struct s_point
 typedef struct s_ray
 {
 	double		dist;
-	t_point	point;
-	int		side;
-	float	rot;
-	float	lheight;
-	float	screen_x;
+	t_point		point;
+	int			side;
+	float		rot;
+	float		lheight;
+	float		screen_x;
 }	t_ray;
 
 typedef struct s_prog
@@ -115,7 +115,9 @@ void	free_prog(t_prog *prog);
 
 // Initialisation functions
 
-int		initprog(t_prog *prog, char *path);
+void	init_prog(t_prog *prog);
+void	init_img(t_prog *prog);
+void	init_map(t_prog *prog);
 
 // Hooks
 

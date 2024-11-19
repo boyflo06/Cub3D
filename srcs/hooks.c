@@ -6,7 +6,7 @@
 /*   By: fghysbre <fghysbre@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 14:48:27 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/11/19 13:56:10 by fghysbre         ###   ########.fr       */
+/*   Updated: 2024/11/19 15:10:24 by fghysbre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	loop(t_prog	*prog)
 		updatemouse(prog);
 	updateplayer(prog);
 	raycast(prog, &img);
-	printf("%f\n", prog->player.rot);
+	printf("%f    \r", prog->fps);
 	mlx_put_image_to_window(prog->mlx, prog->win, img.img, 0, 0);
 	mlx_destroy_image(prog->mlx, img.img);
 	return (1);

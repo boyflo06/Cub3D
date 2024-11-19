@@ -6,7 +6,7 @@
 /*   By: fghysbre <fghysbre@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 16:18:14 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/11/19 14:48:20 by fghysbre         ###   ########.fr       */
+/*   Updated: 2024/11/19 15:09:22 by fghysbre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@ int	displayray(t_prog *prog, t_data *img, t_ray *ray)
 	int		x;
 	float	slheight;
 
-	x = (ray->screen_x - (WIN_W / 480)) - 1;
+	x = (ray->screen_x - (WIN_W / 960));
 	slheight = ray->lheight;
 	if (ray->lheight > WIN_H)
 		ray->lheight = WIN_H;
 	//printf("%f: %f\n",ray->rot, ray->dist);
-	while (x <= ray->screen_x + (WIN_W / 480))
+	while (x <= ray->screen_x + (WIN_W / 960))
 	{
 		y = (WIN_H / 2) - ((int) ray->lheight / 2);
 		while (x >= 0 && x < WIN_W && y <= (WIN_H / 2) + ((int) ray->lheight / 2))
@@ -56,7 +56,7 @@ void	raycast(t_prog *prog, t_data *img) {
 		ra += 2 * PI;
 	if (ra > 2 * PI)
 		ra -= 2 * PI;
-	for (r = 0; r < 240; r++) {
+	for (r = 0; r < 480; r++) {
 		rayh = raycasth(prog, ra);
 		rayv = raycastv(prog, ra);
 		
@@ -68,11 +68,11 @@ void	raycast(t_prog *prog, t_data *img) {
 			ca -= 2 * PI;
 		rayv.dist = rayv.dist * cos(ca);
 		rayv.lheight = (64 * WIN_H) / rayv.dist;
-		rayv.screen_x = r * 5.333333333;
+		rayv.screen_x = r * WIN_W / 480;
 		rayv.rot = ra;
 		displayray(prog, img, &rayv);
 
-		ra += DEG / 4;
+		ra += DEG / 8;
 		if (ra < 0) 
 			ra += 2 * PI;
 		if (ra > 2 * PI)

@@ -6,7 +6,7 @@
 /*   By: fghysbre <fghysbre@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 16:25:03 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/11/18 14:43:47 by fghysbre         ###   ########.fr       */
+/*   Updated: 2024/11/19 15:11:58 by fghysbre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 static void	updaterot(t_prog *prog)
 {
 	if ((prog->keys >> 5) % 2)
-		prog->player.rot += 1.0 * (60 / prog->fps);
+		prog->player.rot += 1.5 * (60.0 / prog->fps);
 	if ((prog->keys >> 4) % 2)
-		prog->player.rot -= 1.0 * (60 / prog->fps);
+		prog->player.rot -= 1.5 * (60.0 / prog->fps);
 	if (prog->player.rot > 359)
 		prog->player.rot -= 360;
 	if (prog->player.rot < 0)

@@ -1,5 +1,8 @@
 {
 	"files.associations": {
 		"libft.h": "c"
+	},
+	"[c]": {
+		"editor.rulers": [80]
 	}
 }

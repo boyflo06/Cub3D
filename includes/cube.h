@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cube.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fghysbre <fghysbre@stduent.s19.be>         +#+  +:+       +#+        */
+/*   By: fghysbre <fghysbre@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 22:56:16 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/11/13 15:47:35 by fghysbre         ###   ########.fr       */
+/*   Updated: 2024/11/18 14:56:40 by fghysbre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,8 @@ typedef struct s_mlx_ptr
 
 void	mlx_destroy(void *mlx_ptr);
 void	freemap(t_map *map);
+void	free_tab(char **tab);
+void	free_prog(t_prog *prog);
 
 // Initialisation functions
 
@@ -132,7 +134,8 @@ void	raycast(t_prog *prog, t_data *img);
 
 // Map Handling
 
-int		parsemap(t_prog *prog, char *path);
+int		getmap(t_prog *prog, char *path);
+int		check_file_format(t_prog *prog, char *path);
 
 // Utils
 
@@ -141,3 +144,4 @@ double	degtorad(double deg);
 int		itoargb(unsigned char a, unsigned char r,
 			unsigned char g, unsigned char b);
 void	ft_pixelput(t_data *data, int x, int y, int color);
+char	**ft_strarrpush(char **arr, char *newstr);

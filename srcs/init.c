@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mleonet <mleonet@student.s19.be>           +#+  +:+       +#+        */
+/*   By: fghysbre <fghysbre@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:52:34 by mleonet           #+#    #+#             */
-/*   Updated: 2024/11/19 19:01:51 by mleonet          ###   ########.fr       */
+/*   Updated: 2024/11/22 14:20:49 by fghysbre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,8 @@ int	check_map_content(t_prog *prog)
 				return (0);
 			if (ft_strchr("NSWE", prog->map.data[i][j]))
 				player++;
-			if (i == 0 || i == prog->map.height - 1 || j == 0 || j == prog->map.width - 1)
+			if (i == 0 || i == prog->map.height - 1 || j == 0
+				|| j == prog->map.width - 1)
 			{
 				if (!ft_strchr(" 1", prog->map.data[i][j]))
 					return (0);

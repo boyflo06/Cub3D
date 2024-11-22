@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hooks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mleonet <mleonet@student.s19.be>           +#+  +:+       +#+        */
+/*   By: fghysbre <fghysbre@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 14:48:27 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/11/19 16:52:10 by mleonet          ###   ########.fr       */
+/*   Updated: 2024/11/22 15:41:59 by fghysbre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,25 @@ int	keyrelease(int key, t_prog *prog)
 	return (1);
 }
 
+void	fillbg(t_prog *prog, t_data *img)
+{
+	int	x;
+	int	y;
+
+	y = -1;
+	while (++y < WIN_H)
+	{
+		x = -1;
+		while (++x < WIN_W)
+		{
+			if (y > WIN_H / 2)
+				ft_pixelput(img, x, y, prog->map.F);
+			else
+				ft_pixelput(img, x, y, prog->map.C);
+		}
+	}
+}
+
 int	loop(t_prog	*prog)
 {
 	t_data			img;
@@ -65,6 +84,7 @@ int	loop(t_prog	*prog)
 	if (prog->keys & KEY_TOGMOUSE)
 		updatemouse(prog);
 	updateplayer(prog);
+	fillbg(prog, &img);
 	raycast(prog, &img);
 	printf("%f    \r", prog->fps);
 	mlx_put_image_to_window(prog->mlx, prog->win, img.img, 0, 0);

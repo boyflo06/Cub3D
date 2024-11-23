@@ -6,7 +6,7 @@
 /*   By: fghysbre <fghysbre@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 16:18:14 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/11/23 16:18:03 by fghysbre         ###   ########.fr       */
+/*   Updated: 2024/11/23 22:00:04 by fghysbre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ void	raycast(t_prog *prog, t_data *img)
 			rayv = rayh;
 		rayv.dist = fixfisheye(prog, rayv, ra);
 		rayv.lheight = (64 * WIN_H) / rayv.dist;
-		rayv.screen_x = r * WIN_W / 480;
+		rayv.screen_x = r * WIN_W / 480 + WIN_W / 960;
 		rayv.rot = ra;
 		displayray(prog, img, &rayv);
 		ra += DEG / 8;

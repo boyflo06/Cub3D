@@ -6,7 +6,7 @@
 /*   By: fghysbre <fghysbre@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 22:56:16 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/11/22 14:55:41 by fghysbre         ###   ########.fr       */
+/*   Updated: 2024/11/23 16:34:35 by fghysbre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,20 @@
 #define PI 3.1415926
 #define DEG 0.0174533
 
-#define KEY_UP 1 << 0
-#define KEY_DOWN 1 << 1
-#define KEY_LEFT 1 << 2
-#define KEY_RIGHT 1 << 3
-#define KEY_ARRLEFT 1 << 4
-#define KEY_ARRRIGHT 1 << 5
-#define KEY_TOGMOUSE 1 << 6
+// 1 << 0
+#define KEY_UP 1
+// 1 << 1
+#define KEY_DOWN 2
+// 1 << 2
+#define KEY_LEFT 4
+// 1 << 3
+#define KEY_RIGHT 8
+// 1 << 4
+#define KEY_ARRLEFT 16
+// 1 << 5
+#define KEY_ARRRIGHT 32
+// 1 << 6
+#define KEY_TOGMOUSE 64
 
 #define WIN_H 1000
 #define WIN_W 1000
@@ -47,16 +54,16 @@ typedef struct s_data
 typedef struct s_map
 {
 	char	**data;
-	char	*NO_src;
-	char	*SO_src;
-	char	*WE_src;
-	char	*EA_src;
-	t_data	NO;
-	t_data	SO;
-	t_data	WE;
-	t_data	EA;
-	int		F;
-	int		C;
+	char	*no_src;
+	char	*so_src;
+	char	*we_src;
+	char	*ea_src;
+	t_data	no;
+	t_data	so;
+	t_data	we;
+	t_data	ea;
+	int		f;
+	int		c;
 	int		width;
 	int		height;
 }	t_map;
@@ -95,6 +102,7 @@ typedef struct s_prog
 {
 	void	*mlx;
 	void	*win;
+	t_data	img;
 	t_map	map;
 	t_plyr	player;
 	char	keys;
@@ -132,6 +140,7 @@ int		initprog(t_prog *prog, char *path);
 int		keypress(int key, t_prog *prog);
 int		keyrelease(int key, t_prog *prog);
 int		loop(t_prog	*prog);
+int		destroy(t_prog *prog);
 
 // Player Movement
 
@@ -147,6 +156,7 @@ void	raycast(t_prog *prog, t_data *img);
 int		getmap(t_prog *prog, char *path);
 int		check_file_format(t_prog *prog, char *path);
 int		add_spaces_map(t_prog *prog);
+int		parsemap(t_prog *prog);
 
 // Utils
 

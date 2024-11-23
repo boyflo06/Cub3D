@@ -6,7 +6,7 @@
 /*   By: fghysbre <fghysbre@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 16:18:14 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/11/22 15:19:28 by fghysbre         ###   ########.fr       */
+/*   Updated: 2024/11/23 16:18:03 by fghysbre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,19 @@ static void	putpixels_p2(t_ray *ray, t_data *img, t_ipoint pos, t_prog *prog)
 
 	rx = ray->point.x;
 	if (ray->side == 0 && ray->rot > PI)
-		ft_pixelput(img, pos.x, pos.y, getpixelcolor(&prog->map.NO,
-				(int)(((float)(fmod(rx, 64) * prog->map.NO.w) / 64.f)),
+		ft_pixelput(img, pos.x, pos.y, getpixelcolor(&prog->map.no,
+				(int)(((float)(fmod(rx, 64) * prog->map.no.w) / 64.f)),
 				(int)((float)((float)(pos.y - ((WIN_H / 2)
 								- ((int) ray->lheight / 2)) + ((ray->slheight
 									- ray->lheight) / 2))
-						/ (float) ray->slheight) *(prog->map.NO.h))));
+						/ (float) ray->slheight) *(prog->map.no.h))));
 	else if (ray->side == 0 && ray->rot < PI)
-		ft_pixelput(img, pos.x, pos.y, getpixelcolor(&prog->map.SO,
-				(int)(((float)((64 - fmod(rx, 64)) * prog->map.SO.w) / 64.f)),
+		ft_pixelput(img, pos.x, pos.y, getpixelcolor(&prog->map.so,
+				(int)(((float)((64 - fmod(rx, 64)) * prog->map.so.w) / 64.f)),
 				(int)((float)((float)(pos.y - ((WIN_H / 2)
 								- ((int) ray->lheight / 2)) + ((ray->slheight
 									- ray->lheight) / 2))
-						/ (float) ray->slheight) *(prog->map.SO.h))));
+						/ (float) ray->slheight) *(prog->map.so.h))));
 }
 
 static void	putpixels(t_ray *ray, t_data *img, t_ipoint pos, t_prog *prog)
@@ -39,19 +39,19 @@ static void	putpixels(t_ray *ray, t_data *img, t_ipoint pos, t_prog *prog)
 
 	ry = ray->point.y;
 	if (ray->side == 1 && (ray->rot < PI / 2 || ray->rot > 3 * PI / 2))
-		ft_pixelput(img, pos.x, pos.y, getpixelcolor(&prog->map.EA,
-				(int)(((float)(fmod(ry, 64) * prog->map.EA.w) / 64.f)),
+		ft_pixelput(img, pos.x, pos.y, getpixelcolor(&prog->map.ea,
+				(int)(((float)(fmod(ry, 64) * prog->map.ea.w) / 64.f)),
 				(int)((float)((float)(pos.y - ((WIN_H / 2)
 								- ((int) ray->lheight / 2)) + ((ray->slheight
 									- ray->lheight) / 2))
-						/ (float) ray->slheight) *(prog->map.EA.h))));
+						/ (float) ray->slheight) *(prog->map.ea.h))));
 	else if (ray->side == 1 && ray->rot > PI / 2 && ray->rot < 3 * PI / 2)
-		ft_pixelput(img, pos.x, pos.y, getpixelcolor(&prog->map.WE,
-				(int)(((float)(64 - (fmod(ry, 64)) * prog->map.WE.w) / 64.f)),
+		ft_pixelput(img, pos.x, pos.y, getpixelcolor(&prog->map.we,
+				(int)(((float)(64 - (fmod(ry, 64)) * prog->map.we.w) / 64.f)),
 				(int)((float)((float)(pos.y - ((WIN_H / 2)
 								- ((int) ray->lheight / 2)) + ((ray->slheight
 									- ray->lheight) / 2))
-						/ (float) ray->slheight) *(prog->map.WE.h))));
+						/ (float) ray->slheight) *(prog->map.we.h))));
 	else if (ray->side == 0)
 		putpixels_p2(ray, img, pos, prog);
 }

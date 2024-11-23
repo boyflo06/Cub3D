@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mleonet <mleonet@student.s19.be>           +#+  +:+       +#+        */
+/*   By: fghysbre <fghysbre@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 14:51:14 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/11/19 16:49:08 by mleonet          ###   ########.fr       */
+/*   Updated: 2024/11/23 16:17:18 by fghysbre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*skip_until_map(int fd, char *buff)
 	tmp = NULL;
 	tmp2 = NULL;
 	while (buff && (ft_strchr(buff, '1') == 0
-			|| ft_strchr("CFNOSEW", buff[0])))
+			|| ft_strchr("CFnoSEW", buff[0])))
 	{
 		if (tmp2)
 			free(tmp2);

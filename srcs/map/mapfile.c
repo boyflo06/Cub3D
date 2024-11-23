@@ -6,7 +6,7 @@
 /*   By: fghysbre <fghysbre@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:17:26 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/11/18 15:26:21 by fghysbre         ###   ########.fr       */
+/*   Updated: 2024/11/23 16:20:57 by fghysbre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,17 +63,17 @@ void	assign_values_file(t_prog *prog, char *line)
 	while (*line == ' ')
 		line++;
 	if (ft_strncmp(line, "NO", 2) == 0)
-		prog->map.NO_src = assign_file(line + 2);
+		prog->map.no_src = assign_file(line + 2);
 	else if (ft_strncmp(line, "SO", 2) == 0)
-		prog->map.SO_src = assign_file(line + 2);
+		prog->map.so_src = assign_file(line + 2);
 	else if (ft_strncmp(line, "WE", 2) == 0)
-		prog->map.WE_src = assign_file(line + 2);
+		prog->map.we_src = assign_file(line + 2);
 	else if (ft_strncmp(line, "EA", 2) == 0)
-		prog->map.EA_src = assign_file(line + 2);
+		prog->map.ea_src = assign_file(line + 2);
 	else if (ft_strncmp(line, "F", 1) == 0)
-		prog->map.F = assign_rgb(line + 1);
+		prog->map.f = assign_rgb(line + 1);
 	else if (ft_strncmp(line, "C", 1) == 0)
-		prog->map.C = assign_rgb(line + 1);
+		prog->map.c = assign_rgb(line + 1);
 }
 
 int	check_file_format(t_prog *prog, char *path)
@@ -96,8 +96,8 @@ int	check_file_format(t_prog *prog, char *path)
 		line = get_next_line(fd);
 	}
 	close(fd);
-	if (!prog->map.NO_src || !prog->map.SO_src || !prog->map.WE_src
-		|| !prog->map.EA_src || !prog->map.F || !prog->map.C)
+	if (!prog->map.no_src || !prog->map.so_src || !prog->map.we_src
+		|| !prog->map.ea_src || !prog->map.f || !prog->map.c)
 		return (write(2, "Error\nCub3D: Wrong data in file\n", 32) - 32);
 	return (1);
 }

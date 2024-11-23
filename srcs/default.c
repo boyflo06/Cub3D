@@ -6,7 +6,7 @@
 /*   By: fghysbre <fghysbre@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 13:35:47 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/11/19 13:36:04 by fghysbre         ###   ########.fr       */
+/*   Updated: 2024/11/23 16:19:22 by fghysbre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,51 +14,51 @@
 
 void	default_img(t_prog *prog)
 {
-	prog->map.NO.img = NULL;
-	prog->map.SO.img = NULL;
-	prog->map.WE.img = NULL;
-	prog->map.EA.img = NULL;
+	prog->map.no.img = NULL;
+	prog->map.so.img = NULL;
+	prog->map.we.img = NULL;
+	prog->map.ea.img = NULL;
 }
 
 void	default_map(t_prog *prog)
 {
 	default_img(prog);
-	prog->map.NO.addr = NULL;
-	prog->map.NO.w = 0;
-	prog->map.NO.h = 0;
-	prog->map.NO.bpp = 0;
-	prog->map.NO.ll = 0;
-	prog->map.NO.end = 0;
-	prog->map.SO.addr = NULL;
-	prog->map.SO.w = 0;
-	prog->map.SO.h = 0;
-	prog->map.SO.bpp = 0;
-	prog->map.SO.ll = 0;
-	prog->map.SO.end = 0;
-	prog->map.WE.addr = NULL;
-	prog->map.WE.w = 0;
-	prog->map.WE.h = 0;
-	prog->map.WE.bpp = 0;
-	prog->map.WE.ll = 0;
-	prog->map.WE.end = 0;
-	prog->map.EA.addr = NULL;
-	prog->map.EA.w = 0;
-	prog->map.EA.h = 0;
-	prog->map.EA.bpp = 0;
-	prog->map.EA.ll = 0;
-	prog->map.EA.end = 0;
+	prog->map.no.addr = NULL;
+	prog->map.no.w = 0;
+	prog->map.no.h = 0;
+	prog->map.no.bpp = 0;
+	prog->map.no.ll = 0;
+	prog->map.no.end = 0;
+	prog->map.so.addr = NULL;
+	prog->map.so.w = 0;
+	prog->map.so.h = 0;
+	prog->map.so.bpp = 0;
+	prog->map.so.ll = 0;
+	prog->map.so.end = 0;
+	prog->map.we.addr = NULL;
+	prog->map.we.w = 0;
+	prog->map.we.h = 0;
+	prog->map.we.bpp = 0;
+	prog->map.we.ll = 0;
+	prog->map.we.end = 0;
+	prog->map.ea.addr = NULL;
+	prog->map.ea.w = 0;
+	prog->map.ea.h = 0;
+	prog->map.ea.bpp = 0;
+	prog->map.ea.ll = 0;
+	prog->map.ea.end = 0;
 }
 
 void	default_prog(t_prog *prog)
 {
 	prog->mlx = NULL;
 	prog->win = NULL;
-	prog->map.NO_src = NULL;
-	prog->map.SO_src = NULL;
-	prog->map.WE_src = NULL;
-	prog->map.EA_src = NULL;
-	prog->map.F = 0;
-	prog->map.C = 0;
+	prog->map.no_src = NULL;
+	prog->map.so_src = NULL;
+	prog->map.we_src = NULL;
+	prog->map.ea_src = NULL;
+	prog->map.f = 0;
+	prog->map.c = 0;
 	prog->map.data = NULL;
 	prog->map.width = 0;
 	prog->map.height = 0;
@@ -67,5 +67,6 @@ void	default_prog(t_prog *prog)
 	prog->player.rot = 0;
 	prog->keys = 0;
 	prog->fps = 0;
+	prog->img.img = NULL;
 	default_map(prog);
 }

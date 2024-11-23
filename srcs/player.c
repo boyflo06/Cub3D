@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   player.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mleonet <mleonet@student.s19.be>           +#+  +:+       +#+        */
+/*   By: fghysbre <fghysbre@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 16:25:03 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/11/19 16:51:52 by mleonet          ###   ########.fr       */
+/*   Updated: 2024/11/23 23:05:11 by fghysbre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,27 +53,27 @@ static void	updatepos(t_prog *prog)
 	}
 }
 
+void	colisioncheck(t_prog *prog, int x, int y)
+{
+	if (prog->map.data[(y - 10) / 64][(x - 5) / 64] == '1' ||
+		prog->map.data[(y - 10) / 64][(x + 5) / 64] == '1')
+		prog->player.y = (y / 64) * 64 + 10;
+	if (prog->map.data[(y + 10) / 64][(x - 5) / 64] == '1' ||
+		prog->map.data[(y + 10) / 64][(x + 5) / 64] == '1')
+		prog->player.y = ((y / 64) + 1) * 64 - 10;
+	if (prog->map.data[(y - 5) / 64][(x - 10) / 64] == '1' ||
+		prog->map.data[(y + 5) / 64][(x - 10) / 64] == '1')
+		prog->player.x = (x / 64) * 64 + 10;
+	if (prog->map.data[(y - 5) / 64][(x + 10) / 64] == '1' ||
+		prog->map.data[(y + 5) / 64][(x + 10) / 64] == '1')
+		prog->player.x = ((x / 64) + 1) * 64 - 10;
+}
+
 void	updateplayer(t_prog *prog)
 {
-	double	oldx;
-	double	oldy;
-
 	updaterot(prog);
-	oldx = prog->player.x;
-	oldy = prog->player.y;
 	updatepos(prog);
-	if (prog->map.data[(int) prog->player.y >> 6][(int) oldx >> 6] == '1')
-		prog->player.y = oldy;
-	if (prog->map.data[(int) oldy >> 6][(int) prog->player.x >> 6] == '1')
-		prog->player.x = oldx;
-	if (prog->map.data[(int) prog->player.y >> 6][(int) prog->player.x >> 6]
-		== '1' &&
-		prog->map.data[(int) prog->player.y >> 6][(int) oldx >> 6] != '1' &&
-		prog->map.data[(int) oldy >> 6][(int) prog->player.x >> 6] != '1')
-	{
-		prog->player.x = oldx;
-		prog->player.y = oldy;
-	}
+	colisioncheck(prog, prog->player.x, prog->player.y);
 }
 
 void	updatemouse(t_prog *prog)

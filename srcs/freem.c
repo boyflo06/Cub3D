@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   freem.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fghysbre <fghysbre@student.s19.be>         +#+  +:+       +#+        */
+/*   By: mleonet <mleonet@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 14:54:54 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/11/23 16:24:37 by fghysbre         ###   ########.fr       */
+/*   Updated: 2024/11/24 20:29:49 by mleonet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,9 @@
 
 void	free_prog_p2(t_prog *prog)
 {
-	if (prog->mlx)
-	{
-		mlx_destroy_display(prog->mlx);
-		free(prog->mlx);
-	}
-}
-
-void	free_prog(t_prog *prog)
-{
 	int	i;
 
 	i = -1;
-	if (prog->map.no_src)
-		free(prog->map.no_src);
-	if (prog->map.so_src)
-		free(prog->map.so_src);
-	if (prog->map.we_src)
-		free(prog->map.we_src);
-	if (prog->map.ea_src)
-		free(prog->map.ea_src);
 	if (prog->map.data)
 	{
 		while (prog->map.data[++i])
@@ -44,6 +27,31 @@ void	free_prog(t_prog *prog)
 		mlx_destroy_window(prog->mlx, prog->win);
 	if (prog->img.img && prog->mlx)
 		mlx_destroy_image(prog->mlx, prog->img.img);
+	if (prog->mlx)
+	{
+		mlx_destroy_display(prog->mlx);
+		free(prog->mlx);
+	}
+}
+
+void	free_prog(t_prog *prog)
+{
+	if (prog->map.no_src)
+		free(prog->map.no_src);
+	if (prog->map.so_src)
+		free(prog->map.so_src);
+	if (prog->map.we_src)
+		free(prog->map.we_src);
+	if (prog->map.ea_src)
+		free(prog->map.ea_src);
+	if (prog->map.no.img)
+		mlx_destroy_image(prog->mlx, prog->map.no.img);
+	if (prog->map.so.img)
+		mlx_destroy_image(prog->mlx, prog->map.so.img);
+	if (prog->map.we.img)
+		mlx_destroy_image(prog->mlx, prog->map.we.img);
+	if (prog->map.ea.img)
+		mlx_destroy_image(prog->mlx, prog->map.ea.img);
 	free_prog_p2(prog);
 }
 

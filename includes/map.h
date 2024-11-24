@@ -3,13 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   map.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fghysbre <fghysbre@student.s19.be>         +#+  +:+       +#+        */
+/*   By: mleonet <mleonet@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 14:52:38 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/11/18 15:23:43 by fghysbre         ###   ########.fr       */
+/*   Updated: 2024/11/24 16:11:26 by mleonet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube.h"
 
-int	assign_rgb(char *str);
+int		assign_rgb(char *str);
+char	*assign_file(char *str);
+int		assign_textures(t_prog *prog, char *line);
+int		assign_values_file(t_prog *prog, char *line);
+int		check_textures_format(char *str);

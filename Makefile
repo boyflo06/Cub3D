@@ -3,7 +3,7 @@ SRCS = srcs/main.c srcs/player.c srcs/hooks.c srcs/freem.c srcs/init.c srcs/defa
 
 RYCST = srcs/raycast/raycast.c srcs/raycast/raycast_h.c srcs/raycast/raycast_v.c srcs/raycast/raycast_utils.c
 
-MAP = srcs/map/map.c srcs/map/mapfile.c srcs/map/mapcolor.c srcs/map/mapparse.c
+MAP = srcs/map/map.c srcs/map/mapfile.c srcs/map/mapcolor.c srcs/map/mapparse.c srcs/map/mapassign.c
 
 INC = -I./includes -I./mlx -I./libft
 

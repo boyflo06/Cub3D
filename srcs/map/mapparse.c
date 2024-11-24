@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mapparse.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fghysbre <fghysbre@student.s19.be>         +#+  +:+       +#+        */
+/*   By: mleonet <mleonet@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 16:34:58 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/11/23 16:36:47 by fghysbre         ###   ########.fr       */
+/*   Updated: 2024/11/24 15:34:00 by mleonet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ int	check_map_content(t_prog *prog)
 		if (player > 1)
 			return (0);
 	}
+	if (player == 0)
+		return (0);
 	return (1);
 }
 

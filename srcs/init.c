@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fghysbre <fghysbre@student.s19.be>         +#+  +:+       +#+        */
+/*   By: mleonet <mleonet@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:52:34 by mleonet           #+#    #+#             */
-/*   Updated: 2024/11/23 16:35:23 by fghysbre         ###   ########.fr       */
+/*   Updated: 2024/11/23 20:06:21 by mleonet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	getplayer(t_prog *prog)
 		j = -1;
 		while (prog->map.data[i][++j])
 		{
-			if (!ft_strchr("NSwe", prog->map.data[i][j]))
+			if (!ft_strchr("NSWE", prog->map.data[i][j]))
 				continue ;
 			prog->player.x = (j << 6) + 32;
 			prog->player.y = (i << 6) + 32;

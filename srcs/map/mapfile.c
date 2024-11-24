@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mapfile.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fghysbre <fghysbre@student.s19.be>         +#+  +:+       +#+        */
+/*   By: mleonet <mleonet@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:17:26 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/11/23 16:20:57 by fghysbre         ###   ########.fr       */
+/*   Updated: 2024/11/24 15:49:35 by mleonet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,22 +58,54 @@ char	*assign_file(char *str)
 	return (res);
 }
 
-void	assign_values_file(t_prog *prog, char *line)
+int assign_textures(t_prog *prog, char *line)
+{
+	if (ft_strncmp(line, "NO", 2) == 0)
+	{
+		if (prog->map.no_src)
+			return (0);
+		prog->map.no_src = assign_file(line + 2);
+	}
+	else if (ft_strncmp(line, "SO", 2) == 0)
+	{
+		if (prog->map.so_src)
+			return (0);
+		prog->map.so_src = assign_file(line + 2);
+	}
+	else if (ft_strncmp(line, "WE", 2) == 0)
+	{
+		if (prog->map.we_src)
+			return (0);
+		prog->map.we_src = assign_file(line + 2);
+	}
+	else if (ft_strncmp(line, "EA", 2) == 0)
+	{
+		if (prog->map.ea_src)
+			return (0);
+		prog->map.ea_src = assign_file(line + 2);
+	}
+	return (1);
+}
+
+int	assign_values_file(t_prog *prog, char *line)
 {
 	while (*line == ' ')
-		line++;
-	if (ft_strncmp(line, "NO", 2) == 0)
-		prog->map.no_src = assign_file(line + 2);
-	else if (ft_strncmp(line, "SO", 2) == 0)
-		prog->map.so_src = assign_file(line + 2);
-	else if (ft_strncmp(line, "WE", 2) == 0)
-		prog->map.we_src = assign_file(line + 2);
-	else if (ft_strncmp(line, "EA", 2) == 0)
-		prog->map.ea_src = assign_file(line + 2);
+		line++;	
+	if (!assign_textures(prog, line))
+		return (0);
 	else if (ft_strncmp(line, "F", 1) == 0)
+	{
+		if (prog->map.f)
+			return (0);
 		prog->map.f = assign_rgb(line + 1);
+	}
 	else if (ft_strncmp(line, "C", 1) == 0)
+	{
+		if (prog->map.c)
+			return (0);
 		prog->map.c = assign_rgb(line + 1);
+	}
+	return (1);
 }
 
 int	check_file_format(t_prog *prog, char *path)
@@ -91,7 +123,8 @@ int	check_file_format(t_prog *prog, char *path)
 		return (write(2, "Error\nCub3D: Empty file\n", 24) - 24);
 	while (line)
 	{
-		assign_values_file(prog, line);
+		if (!assign_values_file(prog, line))
+			return (write(2, "Error\nCub3D: Wrong data in file\n", 32) - 32);
 		free(line);
 		line = get_next_line(fd);
 	}

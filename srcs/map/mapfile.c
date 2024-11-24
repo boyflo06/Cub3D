@@ -6,7 +6,7 @@
 /*   By: mleonet <mleonet@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:17:26 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/11/24 20:36:30 by mleonet          ###   ########.fr       */
+/*   Updated: 2024/11/24 23:21:15 by mleonet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	check_line(t_prog *prog, char *line, int fd)
 		if (!assign_values_file(prog, line))
 		{
 			free(line);
-			return (write(2, "Error\nCub3D: Wrong data in file\n", 32) - 32);
+			return (0);
 		}
 		free(line);
 		line = get_next_line(fd);
@@ -60,9 +60,15 @@ int	check_file_format(t_prog *prog, char *path)
 		return (write(2, "Error\nCub3D: Cannot open file\n", 30) - 30);
 	line = get_next_line(fd);
 	if (!line)
+	{
+		close(fd);
 		return (write(2, "Error\nCub3D: Empty file\n", 24) - 24);
+	}
 	if (!check_line(prog, line, fd))
-		return (0);
+	{
+		close(fd);
+		return (write(2, "Error\nCub3D: Wrong data in file\n", 32) - 32);
+	}
 	close(fd);
 	if (!prog->map.no_src || !prog->map.so_src || !prog->map.we_src
 		|| !prog->map.ea_src || !prog->map.f || !prog->map.c)

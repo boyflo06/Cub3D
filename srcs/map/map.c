@@ -6,7 +6,7 @@
 /*   By: mleonet <mleonet@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 14:51:14 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/11/24 20:22:12 by mleonet          ###   ########.fr       */
+/*   Updated: 2024/11/24 23:31:06 by mleonet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,16 @@ int	check_file_map(char *buff, int fd)
 	return (1);
 }
 
+int	check_file_return(char *buff, int fd)
+{
+	if (!check_file_map(buff, fd))
+	{
+		close(fd);
+		return (0);
+	}
+	return (1);
+}
+
 int	getmap(t_prog *prog, char *path)
 {
 	int		fd;
@@ -88,7 +98,7 @@ int	getmap(t_prog *prog, char *path)
 	}
 	while (buff)
 	{
-		if (!check_file_map(buff, fd))
+		if (!check_file_return(buff, fd))
 			return (0);
 		if (ft_strlen(buff) > 1)
 			push_to_map(prog, buff);
@@ -96,34 +106,5 @@ int	getmap(t_prog *prog, char *path)
 		buff = get_next_line(fd);
 	}
 	close(fd);
-	return (1);
-}
-
-int	add_spaces_map(t_prog *prog)
-{
-	int		i;
-	int		j;
-	char	*new_line;
-
-	i = 0;
-	j = 0;
-	new_line = NULL;
-	while (prog->map.data[i])
-	{
-		j = ft_strlen(prog->map.data[i]);
-		if (j < prog->map.width)
-		{
-			new_line = malloc(prog->map.width + 1);
-			if (!new_line)
-				return (0);
-			ft_strlcpy(new_line, prog->map.data[i], j + 1);
-			while (j < prog->map.width)
-				new_line[j++] = ' ';
-			new_line[j] = '\0';
-			free(prog->map.data[i]);
-			prog->map.data[i] = new_line;
-		}
-		i++;
-	}
 	return (1);
 }

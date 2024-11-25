@@ -6,7 +6,7 @@
 /*   By: mleonet <mleonet@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 14:51:14 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/11/24 23:31:06 by mleonet          ###   ########.fr       */
+/*   Updated: 2024/11/25 01:33:15 by mleonet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*skip_until_map(int fd, char *buff)
 	tmp = NULL;
 	tmp2 = NULL;
 	while (buff && (ft_strchr(buff, '1') == 0
-			|| ft_strchr("CFNSWE", buff[0])))
+			|| ft_strchr("CFNSWE ", buff[0])))
 	{
 		if (tmp2)
 			free(tmp2);

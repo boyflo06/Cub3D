@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mleonet <mleonet@student.s19.be>           +#+  +:+       +#+        */
+/*   By: fghysbre <fghysbre@stduent.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:52:34 by mleonet           #+#    #+#             */
-/*   Updated: 2024/11/23 20:06:21 by mleonet          ###   ########.fr       */
+/*   Updated: 2024/11/25 13:59:15 by fghysbre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,16 +79,16 @@ int	initprog(t_prog *prog, char *path)
 		free_prog(prog);
 		return (write(2, "Error\nCub3D: Cannot init mlx\n", 29) - 29);
 	}
+	if (!getmap(prog, path) || !openimages(prog))
+		return (free_prog(prog), 0);
+	if (!parsemap(prog))
+		return (free_prog(prog), 0);
+	getplayer(prog);
 	prog->win = mlx_new_window(prog->mlx, WIN_W, WIN_H, "Hello World!");
 	if (!prog->win)
 	{
 		free_prog(prog);
 		return (write(2, "Error\nCub3D: Cannot create window\n", 34) - 34);
 	}
-	if (!getmap(prog, path) || !openimages(prog))
-		return (free_prog(prog), 0);
-	if (!parsemap(prog))
-		return (free_prog(prog), 0);
-	getplayer(prog);
 	return (1);
 }

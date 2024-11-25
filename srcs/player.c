@@ -6,7 +6,7 @@
 /*   By: fghysbre <fghysbre@stduent.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 16:25:03 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/11/25 14:58:59 by fghysbre         ###   ########.fr       */
+/*   Updated: 2024/11/25 15:58:07 by fghysbre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,14 @@ static void	updatepos(t_prog *prog)
 
 void	colisioncheck(t_prog *prog, int x, int y)
 {
+	if (prog->map.data[(y - 10) / 64][x / 64] == '1')
+		prog->player.y = (y / 64) * 64 + 10;
+	if (prog->map.data[(y + 10) / 64][x / 64] == '1')
+		prog->player.y = ((y / 64) + 1) * 64 - 10;
+	if (prog->map.data[y / 64][(x - 10) / 64] == '1')
+		prog->player.x = (x / 64) * 64 + 10;
+	if (prog->map.data[y / 64][(x + 10) / 64] == '1')
+		prog->player.x = ((x / 64) + 1) * 64 - 10;
 	if (prog->map.data[(y - 10) / 64][(x - 5) / 64] == '1' ||
 		prog->map.data[(y - 10) / 64][(x + 5) / 64] == '1')
 		prog->player.y = (y / 64) * 64 + 10;

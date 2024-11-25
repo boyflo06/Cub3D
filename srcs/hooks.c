@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hooks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fghysbre <fghysbre@student.s19.be>         +#+  +:+       +#+        */
+/*   By: fghysbre <fghysbre@stduent.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 14:48:27 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/11/23 16:19:03 by fghysbre         ###   ########.fr       */
+/*   Updated: 2024/11/25 17:03:08 by fghysbre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@ int	keypress(int key, t_prog *prog)
 		prog->keys = prog->keys | KEY_ARRRIGHT;
 	else if (key == 65361)
 		prog->keys = prog->keys | KEY_ARRLEFT;
-	else if (key == 'v')
-		prog->keys = prog->keys ^ KEY_TOGMOUSE;
 	else if (key == 65307)
 		destroy(prog);
 	return (1);
@@ -69,12 +67,6 @@ void	fillbg(t_prog *prog, t_data *img)
 	}
 }
 
-int	destroy(t_prog *prog)
-{
-	free_prog(prog);
-	exit(0);
-}
-
 int	loop(t_prog	*prog)
 {
 	static long		milisave = 0;
@@ -86,8 +78,6 @@ int	loop(t_prog	*prog)
 	if (milisave)
 		prog->fps = (1000.0 / (float)(miliseconds - milisave));
 	milisave = miliseconds;
-	if (prog->keys & KEY_TOGMOUSE)
-		updatemouse(prog);
 	updateplayer(prog);
 	fillbg(prog, &prog->img);
 	raycast(prog, &prog->img);

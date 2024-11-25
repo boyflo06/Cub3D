@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   freem.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mleonet <mleonet@student.s19.be>           +#+  +:+       +#+        */
+/*   By: fghysbre <fghysbre@stduent.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 14:54:54 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/11/24 20:29:49 by mleonet          ###   ########.fr       */
+/*   Updated: 2024/11/25 16:54:42 by fghysbre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,10 @@ void	free_tab(char **tab)
 	while (tab[++i])
 		free(tab[i]);
 	free(tab);
+}
+
+int	destroy(t_prog *prog)
+{
+	free_prog(prog);
+	exit(0);
 }

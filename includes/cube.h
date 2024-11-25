@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cube.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mleonet <mleonet@student.s19.be>           +#+  +:+       +#+        */
+/*   By: fghysbre <fghysbre@stduent.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 22:56:16 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/11/24 17:23:52 by mleonet          ###   ########.fr       */
+/*   Updated: 2024/11/25 17:03:18 by fghysbre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,6 @@
 # define KEY_ARRLEFT 16
 // 1 << 5
 # define KEY_ARRRIGHT 32
-// 1 << 6
-# define KEY_TOGMOUSE 64
 
 # define WIN_H 1000
 # define WIN_W 1000

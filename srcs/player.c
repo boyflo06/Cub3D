@@ -6,7 +6,7 @@
 /*   By: fghysbre <fghysbre@stduent.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 16:25:03 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/11/25 15:58:07 by fghysbre         ###   ########.fr       */
+/*   Updated: 2024/11/25 16:55:34 by fghysbre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,14 +82,4 @@ void	updateplayer(t_prog *prog)
 	updaterot(prog);
 	updatepos(prog);
 	colisioncheck(prog, prog->player.x, prog->player.y);
-}
-
-void	updatemouse(t_prog *prog)
-{
-	int	x;
-	int	y;
-
-	mlx_mouse_get_pos(prog->mlx, prog->win, &x, &y);
-	prog->player.rot += x - (WIN_W / 2);
-	mlx_mouse_move(prog->mlx, prog->win, WIN_W / 2, WIN_H / 2);
 }

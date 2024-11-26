@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycast_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fghysbre <fghysbre@student.s19.be>         +#+  +:+       +#+        */
+/*   By: fghysbre <fghysbre@stduent.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 15:30:18 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/11/22 14:30:17 by fghysbre         ###   ########.fr       */
+/*   Updated: 2024/11/26 15:43:40 by fghysbre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ int	getpixelcolor(t_data *data, int x, int y)
 {
 	char	*dst;
 
+	if (x < 0 || x >= data->w || y < 0 || y >= data->h)
+		return (0);
 	dst = data->addr + (y * data->ll + x * (data->bpp / 8));
 	return (*(unsigned int *)dst);
 }

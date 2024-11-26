@@ -1,8 +1,8 @@
-        NO                 ./textures/notpretty.xpm   
-  SO   ./textures/redbrick.xpm
+        NO                 ./textures/knee.xpm   
+  SO   ./textures/knee.xpm
 
-  WE     ./textures/sheetmetal.xpm
-   EA   ./textures/stonebrick.xpm
+  WE     ./textures/knee.xpm
+   EA   ./textures/knee.xpm
 
        C    56  ,  56  ,  56   
 

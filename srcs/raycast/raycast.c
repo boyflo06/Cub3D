@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycast.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fghysbre <fghysbre@student.s19.be>         +#+  +:+       +#+        */
+/*   By: fghysbre <fghysbre@stduent.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 16:18:14 by fghysbre          #+#    #+#             */
-/*   Updated: 2024/11/23 22:00:04 by fghysbre         ###   ########.fr       */
+/*   Updated: 2024/11/26 15:46:52 by fghysbre         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static void	putpixels(t_ray *ray, t_data *img, t_ipoint pos, t_prog *prog)
 						/ (float) ray->slheight) *(prog->map.ea.h))));
 	else if (ray->side == 1 && ray->rot > PI / 2 && ray->rot < 3 * PI / 2)
 		ft_pixelput(img, pos.x, pos.y, getpixelcolor(&prog->map.we,
-				(int)(((float)(64 - (fmod(ry, 64)) * prog->map.we.w) / 64.f)),
+				(int)(((float)((64 - fmod(ry, 64)) * prog->map.we.w) / 64.f)),
 				(int)((float)((float)(pos.y - ((WIN_H / 2)
 								- ((int) ray->lheight / 2)) + ((ray->slheight
 									- ray->lheight) / 2))
